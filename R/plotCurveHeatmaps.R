@@ -3,6 +3,7 @@
 #' @param curve
 #' @param filename output filename
 #' @param n number of genes to plot. Default is 25
+#' @import dplyr tidyr Seurat
 #' @export
 #'
 plotCurveHeatmaps <- function(object=NULL,curve=NULL,filename='heatmap.png',n=25){

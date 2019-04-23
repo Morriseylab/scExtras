@@ -3,6 +3,7 @@
 #' @param npcs number of PC's to run
 #' @param maxdim maximum number of dimensions. Defaults to npcs specified
 #' @param k n number of neighbors for umap
+#' @import dplyr tidyr Seurat
 #' @export
 
 ClusterDR <-function(object,npcs=50, maxdim='auto',k=30){

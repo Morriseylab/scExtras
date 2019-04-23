@@ -1,6 +1,7 @@
 #'Plot heatmap of top n genes
 #' @param object Seurat object
 #' @param nfeatures number of features to plot. Default is 10
+#' @import dplyr tidyr Seurat
 #' @export
 #'
 HeatMapTopGenes <- function(object,nfeatures=10){

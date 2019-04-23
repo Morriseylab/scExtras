@@ -3,6 +3,7 @@
 #' @param groupby grouping variable to color by. Has to be a column name present in metadata of the seurat object
 #' @param reduction Reduction method. Default is 'dm'
 #' @param colors color palette
+#' @import dplyr tidyr Seurat
 #' @export
 #'
 make3dPlot <- function(object,groupby,reduction='dm',colors=NULL){

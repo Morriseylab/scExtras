@@ -3,6 +3,7 @@
 #' @param groupby variable to group by
 #' @param reduction Reduction method. Default is 'dm'
 #' @param dims number of dimensions
+#' @import dplyr tidyr Seurat ggplot2
 #' @export
 #'
 plotPseudoTime = function(object,groupby,reduction='dm',dims=1:2){

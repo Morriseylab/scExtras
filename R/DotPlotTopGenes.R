@@ -1,6 +1,7 @@
 #'Plot dotplot of top n genes
 #' @param object Seurat object
 #' @param nfeatures number of genes to plot. Number has to be between 1 and 10.
+#' @import dplyr tidyr Seurat
 #' @export
 DotPlotTopGenes <- function(object,nfeatures=3){
   if(nfeatures > 50){

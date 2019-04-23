@@ -6,6 +6,7 @@
 #' @param ccscale Specify whether to scale for cell cycle genes or not
 #' @param filter Specify whether to filter data
 #' @return Seurat object
+#' @import dplyr tidyr Seurat
 #' @export
 #' @examples
 #' scrna = processExper(dir=prjdir,'test_prj',org='mouse',files=c("filtered_gene_bc_matrices/mm10"),ccscale=F,filter = T)

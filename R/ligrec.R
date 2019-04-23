@@ -3,6 +3,7 @@
 #' @param grp.var grouping variable
 #' @param org organism
 #' @param perc minimum percentage of cells that should express the ligand or receptor
+#' @import dplyr tidyr Seurat
 #' @export
 #'
 ligrec <- function(object,grp.var='ident',org,perc=30){

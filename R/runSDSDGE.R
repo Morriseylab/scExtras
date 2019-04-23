@@ -1,5 +1,6 @@
 #'run SDSDGE
 #' @param object Seurat object
+#' @import dplyr tidyr Seurat
 #' @export
 #'
 runSDSDGE <- function(object){

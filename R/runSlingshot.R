@@ -4,6 +4,7 @@
 #' @param reduction Reduction method. Default is 'dm'
 #' @param start.clus
 #' @param end.clus
+#' @import dplyr tidyr Seurat slingshot
 #' @export
 #'
 runSlingshot  <- function(object,reduction='dm',groups=NULL, start.clus=NULL,end.clus=NULL){

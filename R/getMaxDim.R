@@ -1,5 +1,6 @@
 #'Get maximum number of PC dimensions
 #' @param object Seurat object
+#' @import dplyr tidyr Seurat
 #' @export
 #'
 getMaxDim <- function(object){

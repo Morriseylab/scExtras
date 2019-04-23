@@ -1,4 +1,4 @@
-Package: SeuratExtras
+Package: scExtras
 Type: Package
 Title: Single cell data analysis helper functions
 Version: 0.1

@@ -11,6 +11,12 @@ runSlingshot(object, reduction = "dm", groups = NULL,
 \item{object}{Seurat object}
 
 \item{reduction}{Reduction method. Default is 'dm'}
+
+\item{groups}{groups}
+
+\item{start.clus}{start cluster}
+
+\item{end.clus}{end cluster}
 }
 \description{
 run Slingshot

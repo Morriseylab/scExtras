@@ -1,9 +1,9 @@
 #'run Slingshot
 #' @param object Seurat object
-#' @param groups
+#' @param groups groups
 #' @param reduction Reduction method. Default is 'dm'
-#' @param start.clus
-#' @param end.clus
+#' @param start.clus start cluster
+#' @param end.clus end cluster
 #' @import dplyr tidyr Seurat slingshot
 #' @export
 #'

@@ -10,6 +10,8 @@ plotCurveHeatmaps(object = NULL, curve = NULL,
 \arguments{
 \item{object}{Seurat object}
 
+\item{curve}{curve to be plotted}
+
 \item{filename}{output filename}
 
 \item{n}{number of genes to plot. Default is 25}

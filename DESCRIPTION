@@ -1,0 +1,11 @@
+Package: SeuratExtras
+Type: Package
+Title: Single cell data analysis helper functions
+Version: 0.1
+Date: 2019-04-22
+Author: Apoorva Babu
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: Functions to run Seurat version 0.3, slingshot, monocle and other scRNA packages on single cell data
+License: What license is it under?
+LazyData: TRUE
+RoxygenNote: 6.1.1

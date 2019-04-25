@@ -16,6 +16,10 @@ RandomName <- function(length = 5L, ...) {
   return(paste(sample(x = letters, size = length, ...), collapse = ''))
 }
 
+AutoPointSize <- function(data) {
+  return(min(1583 / nrow(x = data), 1))
+}
+
 `%||%` <- function(lhs, rhs) {
   if (!is.null(x = lhs)) {
     return(lhs)

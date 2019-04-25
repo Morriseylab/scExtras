@@ -2,6 +2,7 @@
 
 export(ClusterDR)
 export(DotPlotTopGenes)
+export(FeaturePlot2)
 export(HeatMapTopGenes)
 export(RunDiffusion)
 export(getClusterMarkers)

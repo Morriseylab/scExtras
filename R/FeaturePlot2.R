@@ -31,6 +31,7 @@
 #' ggtitle
 #' @examples
 #' FeaturePlot(object = pbmc_small, features = 'PC_1')
+#' @export
 FeaturePlot2 <- function(
   object,
   features,

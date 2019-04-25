@@ -3,16 +3,9 @@
 #' Colors single cells on a dimensional reduction plot according to a 'feature'
 #' (i.e. gene expression, PC scores, number of genes detected, etc.)
 #'
-#' @inheritParams DimPlot
 #' @param order Boolean determining whether to plot cells in order of expression. Can be useful if
 #' cells expressing given feature are getting buried.
-#' @param features Vector of features to plot. Features can come from:
-#' \itemize{
-#'     \item An \code{Assay} feature (e.g. a gene name - "MS4A1")
-#'     \item A column name from meta.data (e.g. mitochondrial percentage - "percent.mito")
-#'     \item A column name from a \code{DimReduc} object corresponding to the cell embedding values
-#'     (e.g. the PC 1 scores - "PC_1")
-#' }
+#' @param features Vector of features to plot.
 #' @param cols The two colors to form the gradient over. Provide as string vector with
 #' the first color corresponding to low values, the second to high. Also accepts a Brewer
 #' color scale or vector of colors. Note: this will bin the data into number of colors provided.
@@ -36,16 +29,6 @@
 #' @importFrom ggplot2 labs scale_x_continuous scale_y_continuous theme element_rect dup_axis guides
 #' element_blank element_text margin scale_color_brewer scale_color_gradientn scale_color_manual coord_fixed
 #' ggtitle
-#'
-#' @export
-#'
-#' @note For the old \code{do.hover} and \code{do.identify} functionality, please see
-#' \code{HoverLocator} and \code{CellSelector}, respectively.
-#'
-#' @aliases FeatureHeatmap
-#' @seealso \code{\link{DimPlot}} \code{\link{HoverLocator}}
-#' \code{\link{CellSelector}}
-#'
 #' @examples
 #' FeaturePlot(object = pbmc_small, features = 'PC_1')
 FeaturePlot2 <- function(

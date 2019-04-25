@@ -39,7 +39,7 @@ FeaturePlot2 <- function(
   cells = NULL,
   cols = c("lightgrey",  "blue"),
   pt.size = NULL,
-  order = FALSE,
+  order = TRUE,
   min.cutoff = NA,
   max.cutoff = NA,
   reduction = NULL,

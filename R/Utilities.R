@@ -28,6 +28,14 @@ AutoPointSize <- function(data) {
   }
 }
 
+`%iff%` <- function(lhs, rhs) {
+  if (!is.null(x = lhs)) {
+    return(rhs)
+  } else {
+    return(lhs)
+  }
+}
+
 SingleDimPlot <- function(
   data,
   dims,

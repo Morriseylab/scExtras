@@ -54,6 +54,6 @@ ligrec <- function(object,grp.var='ident',org,perc=30){
   # get final list of all lig-rec pairs
   #result=result[result$Receptor_cluster!=result$Lig_cluster,]
 
-  object@misc[['ligrec']] <- result
+  object@misc[['ligrecres']] <- result
   object
 }

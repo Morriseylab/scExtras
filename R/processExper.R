@@ -7,6 +7,7 @@
 #' @param filter Specify whether to filter data
 #' @param LowerFeatureCutoff Lower value for Feature cutoff [200]
 #' @param UpperfeatureCutoff Upper bound, can be an integer or if set to MAD will be 3 median + 3*MAD
+#' @param UpperMitoCutoff Upper Mito Pecent cuoff default is 0.05
 #' @return Seurat object
 #' @import dplyr tidyr Seurat
 #' @export
@@ -75,9 +76,15 @@ processExper <- function(dir,name,
       UpperFeatureCutoff <- median(object$nFeature_RNA) + 3*mad(object$nFeature_RNA)
     }
 
+<<<<<<< HEAD
     object <- subset(object, subset = nFeature_RNA > LowerFeatureCutoff & percent.mito < UpperMitoCutoff & nFeature_RNA < UpperFeatureCutoff)
     #object@misc[[stats]] <- list(featurecutofflow = 200,
      #                              featurecutoffhigh = featureCutoff )
+=======
+    object <- subset(object, subset = LowerFeatureCutoff > 200 & percent.mito < 0.05 & nFeature_RNA < UpperFeatureCutoff)
+    object@misc[[stats]] <- list(featurecutofflow = 200,
+                                   featurecutoffhigh = featureCutoff )
+>>>>>>> 7030b9f48db7dd1473e9ea8144e55700fe862ee0
 
   }
 

@@ -5,14 +5,27 @@
 #' @param files path to the dir having the barcodes.tsv, genes.tsv and matrix.mtx files
 #' @param ccscale Specify whether to scale for cell cycle genes or not
 #' @param filter Specify whether to filter data
+#' @param LowerFeatureCutoff Lower value for Feature cutoff [200]
+#' @param UpperfeatureCutoff Upper bound, can be an integer or if set to MAD will be 3 median + 3*MAD
 #' @return Seurat object
 #' @import dplyr tidyr Seurat
 #' @export
 #' @examples
 #' scrna = processExper(dir=prjdir,'test_prj',org='mouse',files=c("filtered_gene_bc_matrices/mm10"),ccscale=F,filter = T)
 
-processExper <- function(dir,name,org='mouse',files,ccscale=F,filter = T){
+processExper <- function(dir,name,
+                         org='mouse',
+                         files,
+                         ccscale=F,
+                         filter = T,
+                         LowerFeatureCutoff=200,
+                         UpperFeatureCutoff="MAD"
+
+                         ){
   try(if(length(files)==0) stop("No files"))
+
+  try(if(UpperFeatureCutoff=="MAD" || !(is.numeric(UpperFeatureCutoff))) stop("Please use MAD and numeric cutoff for UpperFeatureCount"))
+
 
 
   if(length(files)==1){
@@ -58,7 +71,13 @@ processExper <- function(dir,name,org='mouse',files,ccscale=F,filter = T){
 
   if(filter){
     #Using a median + 3 MAD cutoff for high genes.
-    object <- subset(object, subset = nFeature_RNA > 200 & percent.mito < 0.05 & nFeature_RNA < median(object$nFeature_RNA) + 3*mad(object$nFeature_RNA) )
+    if(UpperFeatureCutoff=="MAD"){
+      UpperFeatureCutoff <- median(object$nFeature_RNA) + 3*mad(object$nFeature_RNA)
+    }
+
+    object <- subset(object, subset = LowerFeatureCutoff > 200 & percent.mito < 0.05 & nFeature_RNA < UpperFeatureCutoff)
+    object@misc[[stats]] <- list(featurecutofflow = 200,
+                                   featurecutoffhigh = featureCutoff )
 
   }
 

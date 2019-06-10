@@ -1,3 +1,9 @@
 # scExtras
 
-Functions that use Seurat, monocle and slingshot for single cell RNA-Seq data analysis
+
+Provides addiiontal functions for Seurat v3  
+
+* Diffusionmap
+* Slingshot
+* Ligand-Recptor Analysis
+

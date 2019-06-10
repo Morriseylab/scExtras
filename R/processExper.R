@@ -12,7 +12,7 @@
 #' @import dplyr tidyr Seurat
 #' @export
 #' @examples
-#' scrna = processExper(dir=prjdir,'test_prj',org='mouse',files=c("filtered_gene_bc_matrices/mm10"),ccscale=F,filter = T)
+#' scrna = processExper(dir=prjdir,'test_prj',org='mouse',files=c("filtered_gene_bc_matrices/mm10"),ccscale=F,filter = T,LowerFeatureCutoff=200,UpperFeatureCutoff="MAD",UpperMitoCutoff=0.05)
 
 processExper <- function(dir,name,
                          org='mouse',
@@ -25,7 +25,7 @@ processExper <- function(dir,name,
                          ){
   try(if(length(files)==0) stop("No files"))
 
-  try(if(UpperFeatureCutoff=="MAD" || !(is.numeric(UpperFeatureCutoff))) stop("Please use MAD and numeric cutoff for UpperFeatureCount"))
+  try(if(UpperFeatureCutoff!="MAD" | !(is.numeric(UpperFeatureCutoff))) stop("Please use MAD and numeric cutoff for UpperFeatureCount"))
 
 
 
@@ -76,15 +76,9 @@ processExper <- function(dir,name,
       UpperFeatureCutoff <- median(object$nFeature_RNA) + 3*mad(object$nFeature_RNA)
     }
 
-<<<<<<< HEAD
     object <- subset(object, subset = nFeature_RNA > LowerFeatureCutoff & percent.mito < UpperMitoCutoff & nFeature_RNA < UpperFeatureCutoff)
     #object@misc[[stats]] <- list(featurecutofflow = 200,
      #                              featurecutoffhigh = featureCutoff )
-=======
-    object <- subset(object, subset = LowerFeatureCutoff > 200 & percent.mito < 0.05 & nFeature_RNA < UpperFeatureCutoff)
-    object@misc[[stats]] <- list(featurecutofflow = 200,
-                                   featurecutoffhigh = featureCutoff )
->>>>>>> 7030b9f48db7dd1473e9ea8144e55700fe862ee0
 
   }
 

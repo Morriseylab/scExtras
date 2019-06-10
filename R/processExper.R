@@ -5,7 +5,7 @@
 #' @param files path to the dir having the barcodes.tsv, genes.tsv and matrix.mtx files
 #' @param ccscale Specify whether to scale for cell cycle genes or not
 #' @param filter Specify whether to filter data
-#' @param LowerFeatureCutoff Lower value for Feature cutoff [200]
+#' @param LowerFeatureCutoff Lower value for Feature cutoff
 #' @param UpperfeatureCutoff Upper bound, can be an integer or if set to MAD will be 3 median + 3*MAD
 #' @param UpperMitoCutoff Upper Mito Pecent cuoff default is 0.05
 #' @return Seurat object
@@ -25,8 +25,9 @@ processExper <- function(dir,name,
                          ){
   try(if(length(files)==0) stop("No files"))
 
-  try(if(UpperFeatureCutoff!="MAD" | !(is.numeric(UpperFeatureCutoff))) stop("Please use MAD and numeric cutoff for UpperFeatureCount"))
-
+  if(UpperFeatureCutoff!="MAD" & !is.integer(UpperFeatureCutoff)) {
+    stop("Please use MAD and numeric cutoff for UpperFeatureCount")
+  }
 
 
   if(length(files)==1){

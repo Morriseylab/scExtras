@@ -77,7 +77,20 @@ processExper <- function(dir,name,
       UpperFeatureCutoff <- median(object$nFeature_RNA) + 3*mad(object$nFeature_RNA)
     }
 
-    object <- subset(object, subset = nFeature_RNA > eval(LowerFeatureCutoff) & percent.mito < eval(UpperMitoCutoff) & nFeature_RNA < eval(UpperFeatureCutoff))
+    object@misc[["filterstats"]] <- list()
+    object@misc[["filterstats"]][['TotalSamples']] <- dim(object[[]][1])[1]
+
+    cells.use <- colnames(object)[which(object[[]]['percent.mito'] < UpperMitoCutoff)]
+    object@misc[["filterstats"]][['Mitofilter']] <- dim(object[[]][1])[1] - length(cells.use)
+    object <- subset(object, cells = cells.use)
+
+    cells.use <- colnames(object)[which(object[[]]['nFeature_RNA'] > LowerFeatureCutoff)]
+    object@misc[["filterstats"]][['LowFeatureFilter']] <- dim(object[[]][1])[1] - length(cells.use)
+    object <- subset(object, cells = cells.use)
+
+    cells.use <- colnames(object)[which(object[[]]['nFeature_RNA'] < UpperFeatureCutoff)]
+    object@misc[["filterstats"]][['HighFeatureFilter']] <- dim(object[[]][1])[1] - length(cells.use)
+    object <- subset(object, cells = cells.use)
 
 
   }

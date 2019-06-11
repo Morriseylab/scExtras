@@ -77,9 +77,8 @@ processExper <- function(dir,name,
       UpperFeatureCutoff <- median(object$nFeature_RNA) + 3*mad(object$nFeature_RNA)
     }
 
-    object <- subset(object, subset = nFeature_RNA > LowerFeatureCutoff & percent.mito < UpperMitoCutoff & nFeature_RNA < UpperFeatureCutoff)
-    #object@misc[[stats]] <- list(featurecutofflow = 200,
-     #                              featurecutoffhigh = featureCutoff )
+    object <- subset(object, subset = nFeature_RNA > eval(LowerFeatureCutoff) & percent.mito < eval(UpperMitoCutoff) & nFeature_RNA < eval(UpperFeatureCutoff))
+
 
   }
 

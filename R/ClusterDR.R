@@ -6,7 +6,7 @@
 #' @import dplyr tidyr Seurat
 #' @export
 
-ClusterDR <-function(object,npcs=50, maxdim='auto',k=30, DM=F,UMAP=T,TSNE=T){
+ClusterDR <-function(object,npcs=50, maxdim='auto',k=30, DM=F,UMAP=T,TSNE=T,resolution=0.5,){
   object <- RunPCA(object = object, npcs = npcs, verbose = FALSE)
 
   if(maxdim=='auto'){
@@ -33,7 +33,7 @@ ClusterDR <-function(object,npcs=50, maxdim='auto',k=30, DM=F,UMAP=T,TSNE=T){
     object <- RunDiffusion(object = object,dims=1:dim)
   }
   object <- FindNeighbors(object = object,dims=1:dim,k.param = k)
-  object <- FindClusters(object = object)
+  object <- FindClusters(object = object,resolution=resolution)
   object$var_cluster <- object@active.ident
   object@misc[["findallmarkers"]] <- FindAllMarkers(object = object, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
   object

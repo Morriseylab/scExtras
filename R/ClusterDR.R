@@ -3,10 +3,14 @@
 #' @param npcs number of PC's to run
 #' @param maxdim maximum number of dimensions. Defaults to npcs specified
 #' @param k n number of neighbors for umap
+#' @param DM Run diffusion map
+#' @param UMAP Run UMAP
+#' @param TSNE Run TSNE
+#' @param resolution Cluster resoltion param
 #' @import dplyr tidyr Seurat
 #' @export
 
-ClusterDR <-function(object,npcs=50, maxdim='auto',k=30, DM=F,UMAP=T,TSNE=T,resolution=0.5,){
+ClusterDR <-function(object,npcs=50, maxdim='auto',k=30, DM=F,UMAP=T,TSNE=T,resolution=0.5){
   object <- RunPCA(object = object, npcs = npcs, verbose = FALSE)
 
   if(maxdim=='auto'){

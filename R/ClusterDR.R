@@ -2,7 +2,7 @@
 #' @param object Seurat object
 #' @param npcs Compute N PC dims
 #' @param jackstraw Run jackstraw
-#' @oaram plotdir Where to export plots.
+#' @param plotdir Where to export plots.
 #' @export
 PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
   object <- RunPCA(object = object, npcs = npcs, verbose = FALSE)
@@ -21,7 +21,7 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 #' @param DM Run diffusion map
 #' @param UMAP Run UMAP
 #' @param TSNE Run TSNE
-#' @param resolution Cluster resoltion param
+#' @param resolution Resolution param for FindCluster
 #' @import dplyr tidyr Seurat
 #' @export
 ClusterDR <-function(object,k=30, dims=dim,DM=F,UMAP=T,TSNE=T,resolution=0.5){

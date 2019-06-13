@@ -5,7 +5,7 @@
 \title{Visualize 'features' on a dimensional reduction plot}
 \usage{
 FeaturePlot2(object, features, dims = c(1, 2), cells = NULL,
-  cols = c("lightgrey", "blue"), pt.size = NULL, order = FALSE,
+  cols = c("lightgrey", "blue"), pt.size = NULL, order = TRUE,
   min.cutoff = NA, max.cutoff = NA, reduction = NULL,
   split.by = NULL, shape.by = NULL, blend = FALSE,
   blend.threshold = 0.5, label = FALSE, label.size = 4,

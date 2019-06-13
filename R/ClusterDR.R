@@ -1,6 +1,6 @@
 #'Run PCA and Jackstaw and plots.
 #' @param object Seurat object
-#' npcs
+#' @param npcs Compute N PC dims
 #' @param jackstraw Run jackstraw
 #' @oaram plotdir Where to export plots.
 #' @export

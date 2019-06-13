@@ -12,6 +12,8 @@ PCATools(object, npcs = 50, jackstraw = T, plotdir = "./")
 \item{npcs}{Compute N PC dims}
 
 \item{jackstraw}{Run jackstraw}
+
+\item{plotdir}{Where to export plots.}
 }
 \description{
 Run PCA and Jackstaw and plots.

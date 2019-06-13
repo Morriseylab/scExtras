@@ -18,7 +18,7 @@ ClusterDR(object, k = 30, dims = dim, DM = F, UMAP = T, TSNE = T,
 
 \item{TSNE}{Run TSNE}
 
-\item{resolution}{Cluster resoltion param}
+\item{resolution}{Resolution param for FindCluster}
 }
 \description{
 Run all Dimension Reduction methods and find marker genes between clusters

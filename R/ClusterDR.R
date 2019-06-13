@@ -2,7 +2,7 @@
 #' @param object Seurat object
 #' @param npcs Compute N PC dims
 #' @param jackstraw Run jackstraw
-#' @oaram plotdir Where to export plots.
+#' @param plotdir Where to export plots.
 #' @export
 PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
   object <- RunPCA(object = object, npcs = npcs, verbose = FALSE)

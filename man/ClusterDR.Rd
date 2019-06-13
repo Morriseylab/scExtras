@@ -4,16 +4,21 @@
 \alias{ClusterDR}
 \title{Run all Dimension Reduction methods and find marker genes between clusters}
 \usage{
-ClusterDR(object, npcs = 50, maxdim = "auto", k = 30)
+ClusterDR(object, k = 30, dims = dim, DM = F, UMAP = T, TSNE = T,
+  resolution = 0.5)
 }
 \arguments{
 \item{object}{Seurat object}
 
-\item{npcs}{number of PC's to run}
-
-\item{maxdim}{maximum number of dimensions. Defaults to npcs specified}
-
 \item{k}{n number of neighbors for umap}
+
+\item{DM}{Run diffusion map}
+
+\item{UMAP}{Run UMAP}
+
+\item{TSNE}{Run TSNE}
+
+\item{resolution}{Cluster resoltion param}
 }
 \description{
 Run all Dimension Reduction methods and find marker genes between clusters

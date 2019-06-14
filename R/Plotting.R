@@ -14,7 +14,8 @@ PCAPwPlot <- function(object,dims=1:50){
             axis.ticks.x = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_blank(),
-            axis.title.y = element_blank()
+            axis.title.y = element_blank(),
+            plot.title = element_text(size=8)
       ) +
       ggtitle(paste0('PC',i,' vs PC',i+1))
   }

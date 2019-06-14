@@ -25,6 +25,7 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 #' @param n.components How many compents to compute for Dim reductions (UMAP,DM,etc)
 #' @import dplyr tidyr Seurat
 #' @export
+
 ClusterDR <-function(object,k=30, dims=dim,DM=F,UMAP=T,TSNE=T,findallamrkers=T,resolution=0.5,n.components=2){
 
   if(TSNE==TRUE){

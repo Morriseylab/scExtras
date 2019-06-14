@@ -14,6 +14,27 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
   object
 }
 
+#'Plot Pairwise PCA plots.
+#' @param object Seurat object
+#' @param npcs Compute N PC dims
+#' @export
+PCAPwPlot <- function(object,npcs=50)
+  plist <- list()
+for (i in seq(1,npcs,by=2)){
+  plist[[as.character(i)]] <- FeatureScatter(scrna,paste0('PC_',i),paste0('PC_',i+1)) + geom_point(color='gray') +
+    theme(legend.position="none",
+          axis.text.x = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.ticks.y = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank()
+    ) +
+    ggtitle(paste0('PC',i,' vs PC',i+1))
+}
+  plot_grid(plotlist = plist,nrow = 5)
+}
+
 
 #'Run all Dimension Reduction methods and find marker genes between clusters
 #' @param object Seurat object

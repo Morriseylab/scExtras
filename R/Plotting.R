@@ -1,3 +1,48 @@
+
+#'Plot Pairwise PCA plots.
+#' @param object Seurat object
+#' @param dims Compute N PC dims
+#' @export
+PCAPwPlot <- function(object,dims=1:50){
+  plist <- list()
+
+  for (i in seq(min(dims),max(dims),by=2)){
+    plist[[as.character(i)]] <- FeatureScatter(scrna,paste0('PC_',i),paste0('PC_',i+1)) + geom_point(color='gray') +
+      theme(legend.position="none",
+            axis.text.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.ticks.x = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_blank(),
+            axis.title.y = element_blank()
+      ) +
+      ggtitle(paste0('PC',i,' vs PC',i+1))
+  }
+  plot_grid(plotlist = plist,nrow = 5)
+}
+
+#'Plot Pairwise PCA plots.
+#' @param object Seurat object
+#' @param dims Compute N PC dims
+#' @export
+DimPCAPlot <- function(object,dims=1:10,feature){
+  plist <- list()
+  for (i in dims){
+    plist[[as.character(i)]] <- FeatureScatter(scrna,paste0('PC_',i),feature) + geom_point(color='gray') +
+      theme(legend.position="none",
+            axis.text.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.ticks.x = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_blank(),
+            axis.title.y = element_blank(),
+            plot.title = element_text(size=8)
+      ) +
+      ggtitle(paste0('PC',i,' vs ',feature))
+  }
+  plot_grid(plotlist = plist,ncol = 5)
+}
+
 #' Visualize 'features' on a dimensional reduction plot
 #'
 #' Colors single cells on a dimensional reduction plot according to a 'feature'
@@ -355,3 +400,29 @@ FeaturePlot2 <- function(
   }
   return(plots)
 }
+
+
+#'Create a 3D plot
+#' @param object Seurat object
+#' @param groupby grouping variable to color by. Has to be a column name present in metadata of the seurat object
+#' @param reduction Reduction method. Default is 'dm'
+#' @param colors color palette
+#' @import dplyr tidyr Seurat
+#' @export
+#'
+make3dPlot <- function(object,groupby,reduction='dm',colors=NULL){
+  dims=1:3
+  dims <- paste0(Key(object = object[[reduction]]), dims)
+  data <- FetchData(object = object, vars = c(dims,groupby))
+
+  if(is.factor(data[,groupby])){
+    colors=cpallette
+  }
+  plot_ly(data, x=~get(dims[1]), y=~get(dims[2]), z=~get(dims[3]),colors=colors,color=~get(groupby),size=.5 ) %>%
+    add_markers()
+}
+
+
+
+
+

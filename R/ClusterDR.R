@@ -20,16 +20,17 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 #' @param DM Run diffusion map
 #' @param UMAP Run UMAP
 #' @param TSNE Run TSNE
+#' @param finfallnarkers T/F run findallmarkers
 #' @param resolution Resolution param for FindCluster
 #' @import dplyr tidyr Seurat
 #' @export
-ClusterDR <-function(object,k=30, dims=dim,DM=F,UMAP=T,TSNE=T,resolution=0.5){
+ClusterDR <-function(object,k=30, dims=dim,DM=F,UMAP=T,TSNE=T,findallamrkers=T,resolution=0.5,n.componets=2){
 
   if(TSNE==TRUE){
      object <- RunTSNE(object = object, reduction = "pca",dims = dims)
   }
   if(UMAP==TRUE){
-    object <- RunUMAP(object = object, reduction = "pca", n.neighbors = k,n.components = 3,dims = dims)
+    object <- RunUMAP(object = object, reduction = "pca", n.neighbors = k,n.components = n.components,dims = dims)
   }
   if(DM==TRUE){
     object <- RunDiffusion(object = object,dims=dims)

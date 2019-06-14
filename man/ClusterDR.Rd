@@ -5,7 +5,7 @@
 \title{Run all Dimension Reduction methods and find marker genes between clusters}
 \usage{
 ClusterDR(object, k = 30, dims = dim, DM = F, UMAP = T, TSNE = T,
-  resolution = 0.5)
+  findallamrkers = T, resolution = 0.5, n.components = 2)
 }
 \arguments{
 \item{object}{Seurat object}
@@ -19,6 +19,10 @@ ClusterDR(object, k = 30, dims = dim, DM = F, UMAP = T, TSNE = T,
 \item{TSNE}{Run TSNE}
 
 \item{resolution}{Resolution param for FindCluster}
+
+\item{n.components}{How many compents to compute for Dim reductions (UMAP,DM,etc)}
+
+\item{finfallnarkers}{T/F run findallmarkers}
 }
 \description{
 Run all Dimension Reduction methods and find marker genes between clusters

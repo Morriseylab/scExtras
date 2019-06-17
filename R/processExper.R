@@ -115,9 +115,9 @@ processExper <- function(dir,name,
 
   if(ccscale==T){
     #Scaling the data and removing unwanted sources of variation
-    object <- ScaleData(object = object, vars.to.regress = c("nUMI", "percent.mito","S.Score", "G2M.Score"))
+    object <- ScaleData(object = object, vars.to.regress = c("nCount_RNA", "percent.mito","S.Score", "G2M.Score"))
   }else{
-    object <- ScaleData(object = object, vars.to.regress = c("nUMI", "percent.mito"))
+    object <- ScaleData(object = object, vars.to.regress = c("nCount_RNA", "percent.mito"))
   }
 
   object <- LogSeuratCommand(object = object)

@@ -1,6 +1,6 @@
 #'run Slingshot
 #' @param object Seurat object
-#' @param groups groups
+#' @param group,by groups
 #' @param reduction Reduction method. Default is 'dm'
 #' @param start.clus start cluster
 #' @param end.clus end cluster

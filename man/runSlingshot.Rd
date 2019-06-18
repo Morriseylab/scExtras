@@ -4,7 +4,7 @@
 \alias{runSlingshot}
 \title{run Slingshot}
 \usage{
-runSlingshot(object, reduction = "dm", groups = NULL,
+runSlingshot(object, reduction = "dm", group.by = NULL,
   start.clus = NULL, end.clus = NULL)
 }
 \arguments{
@@ -12,11 +12,11 @@ runSlingshot(object, reduction = "dm", groups = NULL,
 
 \item{reduction}{Reduction method. Default is 'dm'}
 
-\item{groups}{groups}
-
 \item{start.clus}{start cluster}
 
 \item{end.clus}{end cluster}
+
+\item{group, by}{groups}
 }
 \description{
 run Slingshot

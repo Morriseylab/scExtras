@@ -4,12 +4,12 @@
 \alias{plotPseudoTime}
 \title{run Pseudotime}
 \usage{
-plotPseudoTime(object, groupby, reduction = "dm", dims = 1:2)
+plotPseudoTime(object, group.by = NULL, reduction = "dm", dims = 1:2)
 }
 \arguments{
 \item{object}{Seurat object}
 
-\item{groupby}{variable to group by}
+\item{group.by}{variable to group by}
 
 \item{reduction}{Reduction method. Default is 'dm'}
 

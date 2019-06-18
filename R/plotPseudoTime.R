@@ -1,6 +1,6 @@
 #'run Pseudotime
 #' @param object Seurat object
-#' @param groupby variable to group by
+#' @param group.by variable to group by
 #' @param reduction Reduction method. Default is 'dm'
 #' @param dims number of dimensions
 #' @import dplyr tidyr Seurat ggplot2

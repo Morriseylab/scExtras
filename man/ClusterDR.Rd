@@ -5,7 +5,7 @@
 \title{Run all Dimension Reduction methods and find marker genes between clusters}
 \usage{
 ClusterDR(object, k = 30, dims = dim, DM = F, UMAP = T, TSNE = T,
-  findallamrkers = T, resolution = 0.5, n.components = 2)
+  findallmarkers = T, resolution = 0.5, n.components = 2)
 }
 \arguments{
 \item{object}{Seurat object}

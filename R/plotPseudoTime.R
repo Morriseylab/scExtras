@@ -6,8 +6,9 @@
 #' @import dplyr tidyr Seurat ggplot2
 #' @export
 #'
-plotPseudoTime = function(object,groupby,reduction='dm',dims=1:2){
-
+plotPseudoTime = function(object,group.by=NULL,reduction='dm',dims=1:2){
+  object[['ident']] <- Idents(object = object)
+  group.by <- group.by %||% 'ident'
   curved <- bind_rows(lapply(names(object@misc$sds$data@curves), function(x){c <- slingCurves(object@misc$sds$data)[[x]]
   d <- as.data.frame(c$s[c$ord,seq_len(2)])
   d$curve<-x

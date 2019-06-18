@@ -26,7 +26,7 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 #' @import dplyr tidyr Seurat
 #' @export
 
-ClusterDR <-function(object,k=30, dims=dim,DM=F,UMAP=T,TSNE=T,findallamrkers=T,resolution=0.5,n.components=2){
+ClusterDR <-function(object,k=30, dims=dim,DM=F,UMAP=T,TSNE=T,findallmarkers=T,resolution=0.5,n.components=2){
 
   if(TSNE==TRUE){
      object <- RunTSNE(object = object, reduction = "pca",dims = dims)
@@ -40,6 +40,9 @@ ClusterDR <-function(object,k=30, dims=dim,DM=F,UMAP=T,TSNE=T,findallamrkers=T,r
   object <- FindNeighbors(object = object,dims=dims,k.param = k)
   object <- FindClusters(object = object,resolution=resolution)
   object$var_cluster <- object@active.ident
-  object@misc[["findallmarkers"]] <- FindAllMarkers(object = object, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+  if(findallmarkers==TRUE){
+      object@misc[["findallmarkers"]] <- FindAllMarkers(object = object, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+  }
+
   object
 }

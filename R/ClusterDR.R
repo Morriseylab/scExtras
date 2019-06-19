@@ -17,6 +17,7 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 #'Run all Dimension Reduction methods and find marker genes between clusters
 #' @param object Seurat object
 #' @param k n number of neighbors for umap
+#' @param dim
 #' @param DM Run diffusion map
 #' @param UMAP Run UMAP
 #' @param TSNE Run TSNE

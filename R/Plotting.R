@@ -7,7 +7,7 @@ PCAPwPlot <- function(object,dims=1:50){
   plist <- list()
 
   for (i in seq(min(dims),max(dims),by=2)){
-    plist[[as.character(i)]] <- FeatureScatter(scrna,paste0('PC_',i),paste0('PC_',i+1)) + geom_point(color='gray') +
+    plist[[as.character(i)]] <- FeatureScatter(object,paste0('PC_',i),paste0('PC_',i+1)) + geom_point(color='gray') +
       theme(legend.position="none",
             axis.text.x = element_blank(),
             axis.text.y = element_blank(),
@@ -29,7 +29,7 @@ PCAPwPlot <- function(object,dims=1:50){
 DimPCAPlot <- function(object,dims=1:10,feature){
   plist <- list()
   for (i in dims){
-    plist[[as.character(i)]] <- FeatureScatter(scrna,paste0('PC_',i),feature) + geom_point(color='gray') +
+    plist[[as.character(i)]] <- FeatureScatter(object,paste0('PC_',i),feature) + geom_point(color='gray') +
       theme(legend.position="none",
             axis.text.x = element_blank(),
             axis.text.y = element_blank(),
@@ -43,6 +43,98 @@ DimPCAPlot <- function(object,dims=1:10,feature){
   }
   plot_grid(plotlist = plist,ncol = 5)
 }
+
+#'bi_getValues utility function.
+#' @param object Seurat object
+#' @param features Compute N PC dims
+#' @export
+
+bigene_getValues <- function(object,features,limita,limitb){
+  if(features !=2){
+    stop("Please enter 2 features")
+  }
+
+  gene_values=FetchData(object=object,vars=features)
+  colnames(gene_values) <- c('genea','geneb')
+  # gene_values=as.data.frame(gene_values) %>%
+  #   mutate(value =ifelse(genea>=limita[1] & geneb <limitb[1], gene_probes[1], ifelse(genea<limita[1] & geneb >=limitb[1],
+  #                   gene_probes[2],ifelse(genea>=limita[1] & geneb >=limitb[1],"DoublePos","NULL"))))
+  as.data.frame(gene_values) %>%
+    mutate(value = ifelse(genea>=limita[1] & geneb>=limitb[1],
+                          'both',
+                          ifelse(genea>=limita[1] & geneb<limitb[1],
+                                 gene_probes[1],
+                                 ifelse(genea<=limita[1] & geneb>=limitb[1],
+                                        gene_probes[2],
+                                        'none')))
+    ) #%>% select(value)
+}
+
+
+#'bi_getValues utility function.
+#' @param object Seurat object
+#' @param features 2 genes
+#' @param x
+#' @param y
+#' @param limita
+#' @param limitb
+#' @param pt.size Adjust point size
+#' @param title Plot Tttle
+#' @param reduction Default is umap
+#' @export
+
+BiGenePlot <- function (object, features, x=1,y=2, limita=c(1,100), limitb=c(1,100), pt.size = 0.1,
+                         title = NULL,reduction="umap")
+{
+
+  gene_values <- bigene_getValues(object,gene_probes,limita,limitb)
+  projection=as.data.frame(eval(parse(text=paste("Embeddings(object, reduction =\"",type,"\")",sep=""))))
+  colnames(projection) <- c("Component.1", "Component.2")
+  proj_gene <- data.frame(cbind(projection, gene_values))
+  #proj_gene$value = factor(proj_gene$value,levels=unique(proj_gene$value))
+  proj_gene$value = factor(proj_gene$value,levels=c('both',gene_probes[1],gene_probes[2],'none'))
+  proj_gene <- arrange(proj_gene, desc(value))
+
+  dims <- paste0(Key(object = object[[reduction]]), dims)
+
+  p=FetchData(object = object, vars = c(dims,groupby)) %>%
+    ggplot(.,aes_string(x=dims[1],y=dims[2]))+geom_point(aes(color=!!sym(groupby))) +
+
+
+
+
+  p <- ggplot(proj_gene, aes(Component.1, Component.2)) +
+    geom_point(aes(colour = value), size = marker_size) +
+    scale_color_manual(values=c("#E41A1C","#377EB8","#4DAF4A", 'grey75'),drop=F) +
+    theme(legend.key.size = unit(10,"point")) + xlab(paste("Component", x)) +
+    ylab(paste("Component", y))
+
+
+  if (!is.null(title)) {
+    p <- p + ggtitle(title)
+  }
+  p <- p + monocle_theme_opts() + theme(plot.title = element_text(hjust = 0.5),
+                                        legend.position="bottom",
+                                        legend.title=element_blank(),
+                                        legend.text=element_text(size=14),
+                                        panel.grid.major = element_blank(),
+                                        panel.grid.minor = element_blank())
+
+  return(p)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #' Visualize 'features' on a dimensional reduction plot
 #'

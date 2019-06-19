@@ -44,96 +44,80 @@ DimPCAPlot <- function(object,dims=1:10,feature){
   plot_grid(plotlist = plist,ncol = 5)
 }
 
-#'bi_getValues utility function.
-#' @param object Seurat object
-#' @param features Compute N PC dims
-#' @export
-
-bigene_getValues <- function(object,features,limita,limitb){
-  if(features !=2){
-    stop("Please enter 2 features")
-  }
-
-  gene_values=FetchData(object=object,vars=features)
-  colnames(gene_values) <- c('genea','geneb')
-  # gene_values=as.data.frame(gene_values) %>%
-  #   mutate(value =ifelse(genea>=limita[1] & geneb <limitb[1], gene_probes[1], ifelse(genea<limita[1] & geneb >=limitb[1],
-  #                   gene_probes[2],ifelse(genea>=limita[1] & geneb >=limitb[1],"DoublePos","NULL"))))
-  as.data.frame(gene_values) %>%
-    mutate(value = ifelse(genea>=limita[1] & geneb>=limitb[1],
-                          'both',
-                          ifelse(genea>=limita[1] & geneb<limitb[1],
-                                 gene_probes[1],
-                                 ifelse(genea<=limita[1] & geneb>=limitb[1],
-                                        gene_probes[2],
-                                        'none')))
-    ) #%>% select(value)
-}
-
 
 #'bi_getValues utility function.
 #' @param object Seurat object
-#' @param features 2 genes
-#' @param x
-#' @param y
-#' @param limita
-#' @param limitb
+#' @param feature1 Feature 1
+#' @param feature2 Feature 2
+#' @param feature1.min Min UMI for a cell to be postive for feature. Set higher for more a restrictive selection
+#' @param feature2.min Min UMI for a cell to be postive for feature. Set higher for more a restrictive selection
+#' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
+#' @param reduction Which dimensionality reduction to use
 #' @param pt.size Adjust point size
 #' @param title Plot Tttle
-#' @param reduction Default is umap
 #' @export
 
-BiGenePlot <- function (object, features, x=1,y=2, limita=c(1,100), limitb=c(1,100), pt.size = 0.1,
-                         title = NULL,reduction="umap")
-{
+BiGenePlot <-
+  function(object,
+           feature1,
+           feature2,
+           feature1.min = 1,
+           feature2.min = 1,
+           dims = 1:2,
+           reduction = "umap",
+           pt.size = 0.1,
+           title = NULL
+  )
+  {
+    ###
+    feature1.name <- paste0(feature1, '+')
+    feature2.name <- paste0(feature2, '+')
+    feature.both.name <- paste0(feature1, '+/', feature2, '+')
+    feature.none.name <- paste0(feature1, '-/', feature2, '-')
 
-  gene_values <- bigene_getValues(object,gene_probes,limita,limitb)
-  projection=as.data.frame(eval(parse(text=paste("Embeddings(object, reduction =\"",type,"\")",sep=""))))
-  colnames(projection) <- c("Component.1", "Component.2")
-  proj_gene <- data.frame(cbind(projection, gene_values))
-  #proj_gene$value = factor(proj_gene$value,levels=unique(proj_gene$value))
-  proj_gene$value = factor(proj_gene$value,levels=c('both',gene_probes[1],gene_probes[2],'none'))
-  proj_gene <- arrange(proj_gene, desc(value))
+    dims <- paste0(Key(object = object[[reduction]]), dims)
+    data <-
+      FetchData(object = object,
+                vars = c(dims, 'ident', feature1, feature2)) %>%
+      mutate(value = ifelse(
+        !!sym(feature1) >= feature1.min & !!sym(feature2) >= feature2.min,
+        feature1.2.name,
+        ifelse(
+          !!sym(feature1) >= feature1.min & !!sym(feature2) < feature1.min,
+          feature1.name,
+          ifelse(
+            !!sym(feature1) <= feature1.min & !!sym(feature2) >= feature1.min,
+            feature2.name,
+            feature.none.name
+          )
+        )
+      )) %>%
+      mutate(value = factor(
+        value,
+        levels = c(
+          feature.both.name,
+          feature1.name ,
+          feature2.name ,
+          feature.none.name
+        )
+      )) %>%
+      arrange(desc(value))
 
-  dims <- paste0(Key(object = object[[reduction]]), dims)
 
-  p=FetchData(object = object, vars = c(dims,groupby)) %>%
-    ggplot(.,aes_string(x=dims[1],y=dims[2]))+geom_point(aes(color=!!sym(groupby))) +
+    ggplot(data, aes_string(x = dims[1], y = dims[2])) +
+      geom_point(aes(color = value)) +
+      scale_color_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", 'grey75'),
+                         drop = F) +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 14),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()
+      )
 
-
-
-
-  p <- ggplot(proj_gene, aes(Component.1, Component.2)) +
-    geom_point(aes(colour = value), size = marker_size) +
-    scale_color_manual(values=c("#E41A1C","#377EB8","#4DAF4A", 'grey75'),drop=F) +
-    theme(legend.key.size = unit(10,"point")) + xlab(paste("Component", x)) +
-    ylab(paste("Component", y))
-
-
-  if (!is.null(title)) {
-    p <- p + ggtitle(title)
   }
-  p <- p + monocle_theme_opts() + theme(plot.title = element_text(hjust = 0.5),
-                                        legend.position="bottom",
-                                        legend.title=element_blank(),
-                                        legend.text=element_text(size=14),
-                                        panel.grid.major = element_blank(),
-                                        panel.grid.minor = element_blank())
-
-  return(p)
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #' Visualize 'features' on a dimensional reduction plot

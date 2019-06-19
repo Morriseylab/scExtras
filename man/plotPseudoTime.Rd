@@ -11,9 +11,9 @@ plotPseudoTime(object, group.by = NULL, reduction = "dm", dims = 1:2)
 
 \item{group.by}{variable to group by}
 
-\item{reduction}{Reduction method. Default is 'dm'}
+\item{reduction}{Which dimensionality reduction to use}
 
-\item{dims}{number of dimensions}
+\item{dims}{Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions}
 }
 \description{
 run Pseudotime

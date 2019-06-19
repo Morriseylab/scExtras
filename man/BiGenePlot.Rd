@@ -4,20 +4,28 @@
 \alias{BiGenePlot}
 \title{bi_getValues utility function.}
 \usage{
-BiGenePlot(object, features, x = 1, y = 2, limita = c(1, 100),
-  limitb = c(1, 100), pt.size = 0.1, title = NULL,
-  reduction = "umap")
+BiGenePlot(object, feature1, feature2, feature1.min = 1,
+  feature2.min = 1, dims = 1:2, reduction = "umap", pt.size = 0.1,
+  title = NULL)
 }
 \arguments{
 \item{object}{Seurat object}
 
-\item{features}{2 genes}
+\item{feature1}{Feature 1}
+
+\item{feature2}{Feature 2}
+
+\item{feature1.min}{Min UMI for a cell to be postive for feature. Set higher for more a restrictive selection}
+
+\item{feature2.min}{Min UMI for a cell to be postive for feature. Set higher for more a restrictive selection}
+
+\item{dims}{Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions}
+
+\item{reduction}{Which dimensionality reduction to use}
 
 \item{pt.size}{Adjust point size}
 
 \item{title}{Plot Tttle}
-
-\item{reduction}{Default is umap}
 }
 \description{
 bi_getValues utility function.

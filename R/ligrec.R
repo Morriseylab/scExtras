@@ -1,14 +1,14 @@
 #'Get ligand receptor pairs between all clusters
 #' @param object Seurat object
-#' @param grp.var grouping variable
+#' @param group.by grouping variable
 #' @param org organism
 #' @param perc minimum percentage of cells that should express the ligand or receptor
 #' @import dplyr tidyr Seurat
 #' @export
-#'
-ligrec <- function(object,grp.var='ident',org,perc=30){
+#' @return Returns the object with object@misc[[ligrecres]] containing the matrix of lignad-receptor pair data
+RunLigRec <- function(object,group.by='ident',org,perc=30){
   #get grouping variable
-  var=as.character(grp.var)
+  var=as.character(group.by)
   #genes=fread("data/ligrecgenes.txt",header = TRUE)
   if(org=="mouse"){
     data('Mm_PairsLigRec',package="ligrec")

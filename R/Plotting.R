@@ -81,7 +81,7 @@ BiGenePlot <-
                 vars = c(dims, 'ident', feature1, feature2)) %>%
       mutate(value = ifelse(
         !!sym(feature1) >= feature1.min & !!sym(feature2) >= feature2.min,
-        feature1.2.name,
+        feature.both.name,
         ifelse(
           !!sym(feature1) >= feature1.min & !!sym(feature2) < feature1.min,
           feature1.name,

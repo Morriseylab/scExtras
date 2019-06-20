@@ -1,4 +1,4 @@
-#'run SDSDGE
+#'run Psuedotime Diff Expression
 #' @param object Seurat object
 #' @import dplyr tidyr Seurat gam
 #' @export

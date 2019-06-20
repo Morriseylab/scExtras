@@ -27,7 +27,7 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 #' @import dplyr tidyr Seurat
 #' @export
 
-ClusterDR <-function(object,k=30, dims=dim,DM=F,UMAP=T,TSNE=T,findallmarkers=T,resolution=0.5,n.components=2){
+ClusterDR <-function(object,k=30, dims,DM=F,UMAP=T,TSNE=T,findallmarkers=T,resolution=0.5,n.components=2){
 
   if(TSNE==TRUE){
      object <- RunTSNE(object = object, reduction = "pca",dims = dims)

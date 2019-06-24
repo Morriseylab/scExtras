@@ -67,14 +67,20 @@ plotPseudoTime = function(object,
 
   dims <- paste0(Key(object = object[[reduction]]), dims)
 
-  p = FetchData(object = object, vars = c(dims, group.by)) %>%
-    ggplot(., aes_string(x = dims[1], y = dims[2])) + geom_point(aes(color =
-                                                                       !!sym(group.by))) +
-    theme(legend.position = "top") +
-    guides(col = guide_legend(nrow = 2)) +
-    geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
+  data <- FetchData(object = object, vars = c(dims, group.by))
+  p <- ggplot(data, aes_string(x = dims[1], y = dims[2])) +
+    geom_point(aes(color =!!sym(group.by))) +
+    theme(legend.position = "top")
+
+  if (is.character(data[[group.by]]) | is.factor(data[[group.by]])){
+    p <- p + guides(col = guide_legend(nrow = 2))
+  } else {
+    p <- p + scale_color_distiller(palette = "RdYlBu", na.value = 'grey90')
+  }
+  p <- p +geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
   p
 }
+
 
 #'Plot heatmap of the pseudotime data
 #' @param object Seurat object

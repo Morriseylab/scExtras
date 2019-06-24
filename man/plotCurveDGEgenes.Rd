@@ -5,7 +5,7 @@
 \title{Create feature plots of genes}
 \usage{
 plotCurveDGEgenes(object = NULL, curve = NULL, n = 25,
-  reduction.use = "dm")
+  reduction = "dm")
 }
 \arguments{
 \item{object}{Seurat object}
@@ -14,7 +14,7 @@ plotCurveDGEgenes(object = NULL, curve = NULL, n = 25,
 
 \item{n}{number of genes to plot. Default is 25}
 
-\item{reduction.use}{Reduction method. Default is 'dm'}
+\item{reduction}{Reduction method. Default is 'dm'}
 }
 \description{
 Create feature plots of genes

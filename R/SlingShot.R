@@ -15,7 +15,7 @@ runSlingshot  <- function(object,reduction='dm',group.by=NULL, start.clus=NULL,e
 
   object@misc[['sds']] <-  list("dr"=reduction,"data"=slingshot(rd,cl,start.clus=start.clus,end.clus=end.clus))
   ps <- slingPseudotime(object@misc[['sds']]$data)
-  object@meta.data[,colnames(ps)] <- ps
+  object@meta.data[,colnames(ps)] <- as.data.frame(ps)
   return(object)
 }
 
@@ -51,26 +51,30 @@ runPseudoTimeDGE <- function(object){
 #' @import dplyr tidyr Seurat ggplot2
 #' @export
 #'
-plotPseudoTime = function(object,group.by=NULL,reduction='dm',dims=1:2){
+plotPseudoTime = function(object,
+                          group.by = NULL,
+                          reduction = 'dm',
+                          dims = 1:2) {
   object[['ident']] <- Idents(object = object)
   group.by <- group.by %||% 'ident'
-  curved <- bind_rows(lapply(names(object@misc$sds$data@curves), function(x){c <- slingCurves(object@misc$sds$data)[[x]]
-  d <- as.data.frame(c$s[c$ord,seq_len(2)])
-  d$curve<-x
-  return(d)
-  })
-  )
+  curved <-
+    bind_rows(lapply(names(object@misc$sds$data@curves), function(x) {
+      c <- slingCurves(object@misc$sds$data)[[x]]
+      d <- as.data.frame(c$s[c$ord, seq_len(2)])
+      d$curve <- x
+      return(d)
+    }))
 
   dims <- paste0(Key(object = object[[reduction]]), dims)
 
-  p=FetchData(object = object, vars = c(dims,group.by)) %>%
-    ggplot(.,aes_string(x=dims[1],y=dims[2]))+geom_point(aes(color=!!sym(group.by))) +
-    theme(legend.position="top") +
+  p = FetchData(object = object, vars = c(dims, group.by)) %>%
+    ggplot(., aes_string(x = dims[1], y = dims[2])) + geom_point(aes(color =
+                                                                       !!sym(group.by))) +
+    theme(legend.position = "top") +
     guides(col = guide_legend(nrow = 2)) +
-    geom_path(aes_string(dims[1], dims[2],linetype="curve"),curved,size=1)
+    geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
   p
 }
-
 
 #'Plot heatmap of the pseudotime data
 #' @param object Seurat object
@@ -80,28 +84,41 @@ plotPseudoTime = function(object,group.by=NULL,reduction='dm',dims=1:2){
 #' @import dplyr tidyr Seurat
 #' @export
 #'
-plotCurveHeatmaps <- function(object=NULL,curve=NULL,filename='heatmap.png',n=25){
-  c = sym(curve)
-  cells = object@meta.data %>% tibble::rownames_to_column('cellid') %>% arrange(desc(!!c)) %>% filter(!is.na(!!c))
-  genes = object@misc$sds$dge[[curve]] %>% arrange(p.value) %>% head(n) %>% pull(gene)
-  FetchData(object,genes,cells$cellid) %>% t(.) %>%
-    NMF::aheatmap(.,Colv=NA,distfun='pearson',scale='row',annCol=cells$var_celltype,annColors = list(X1=cpallette),
-                  filename=filename)
+plotCurveHeatmaps <-
+  function(object = NULL,
+           curve = NULL,
+           annCol= 'var_cluster',
+           filename = 'heatmap.png',
+           n = 25) {
+    cells <- object@meta.data %>% tibble::rownames_to_column('cellid')  %>% dplyr::arrange(!!sym(curve)) %>% filter(!is.na(!!sym(curve)))
+    genes <- object@misc$sds$dge[[curve]] %>% dplyr::arrange(p.value) %>% head(n) %>% pull(gene)
+    FetchData(object=object, vars=genes, cells=cells$cellid) %>% t(.) %>%
+      NMF::aheatmap(
+        .,
+        Colv = NA,
+        distfun = 'pearson',
+        scale = 'row',
+        annCol = cells[[annCol]],
+        annColors = list(X1 = cpallette),
+        filename = filename
+      )
 
-}
+  }
+
+
 
 
 #'Create feature plots of genes
 #' @param object Seurat object
 #' @param curve curve to be plotted
-#' @param reduction.use Reduction method. Default is 'dm'
+#' @param reduction Reduction method. Default is 'dm'
 #' @param n number of genes to plot. Default is 25
 #' @import dplyr tidyr Seurat
 #' @export
 #'
-plotCurveDGEgenes <- function(object=NULL,curve=NULL,n=25,reduction.use='dm'){
+plotCurveDGEgenes <- function(object=NULL,curve=NULL,n=25,reduction='dm'){
   genes = object@misc$sds$dge[[curve]] %>% arrange(p.value) %>% head(n) %>% pull(gene)
-  plot_grid(  plotlist = FeaturePlot(scrna,genes,reduction = reduction.use,cols = c('grey','purple')))
+  plot_grid(  plotlist = FeaturePlot(scrna,genes,reduction = reduction,cols = c('grey','purple')))
 
 }
 

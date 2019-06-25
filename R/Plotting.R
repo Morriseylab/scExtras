@@ -54,6 +54,7 @@ DimPCAPlot <- function(object,dims=1:10,feature){
 #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
 #' @param reduction Which dimensionality reduction to use
 #' @param pt.size Adjust point size
+#' @param curve
 #' @param title Plot Tttle
 #' @export
 
@@ -66,6 +67,7 @@ BiGenePlot <-
            dims = 1:2,
            reduction = "umap",
            pt.size = 0.1,
+           curve1 = NULL,
            title = NULL
   )
   {
@@ -104,7 +106,7 @@ BiGenePlot <-
       arrange(desc(value))
 
 
-    ggplot(data, aes_string(x = dims[1], y = dims[2])) +
+    p <- ggplot(data, aes_string(x = dims[1], y = dims[2])) +
       geom_point(aes(color = value)) +
       scale_color_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", 'grey75'),
                          drop = F) +
@@ -116,6 +118,18 @@ BiGenePlot <-
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank()
       )
+
+    if(!is.null(curve)){
+      curved <-
+        bind_rows(lapply(names(object@misc$sds$data@curves), function(x) {
+          c <- slingCurves(object@misc$sds$data)[[x]]
+          d <- as.data.frame(c$s[c$ord, seq_len(2)])
+          d$curve <- x
+          return(d)
+        }))
+      p <- p +geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
+    }
+
 
   }
 

@@ -6,7 +6,7 @@
 \usage{
 BiGenePlot(object, feature1, feature2, feature1.min = 1,
   feature2.min = 1, dims = 1:2, reduction = "umap", pt.size = 0.1,
-  title = NULL)
+  curve1 = NULL, title = NULL)
 }
 \arguments{
 \item{object}{Seurat object}

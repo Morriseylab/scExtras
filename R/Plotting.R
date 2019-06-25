@@ -129,7 +129,7 @@ BiGenePlot <-
         }))
       p <- p +geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
     }
-
+p
 
   }
 

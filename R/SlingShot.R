@@ -16,9 +16,9 @@ runSlingshot  <- function(object,reduction='dm',group.by=NULL, start.clus=NULL,e
   object@misc[['sds']] <-  list("dr"=reduction,"data"=slingshot(rd,cl,start.clus=start.clus,end.clus=end.clus))
   ps <- slingPseudotime(object@misc[['sds']]$data)
   object@meta.data[,colnames(ps)] <- as.data.frame(ps)
+  object <- LogSeuratCommand(object = object)
   return(object)
 }
-
 
 #'run Psuedotime Diff Expression
 #' @param object Seurat object
@@ -39,6 +39,7 @@ runPseudoTimeDGE <- function(object){
       tidyr::unnest(tidied) %>%
       filter(term !='Residuals')
   }
+  object <- LogSeuratCommand(object = object)
   return(object)
 
 }
@@ -110,8 +111,6 @@ plotCurveHeatmaps <-
       )
 
   }
-
-
 
 
 #'Create feature plots of genes

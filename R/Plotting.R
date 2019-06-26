@@ -81,19 +81,13 @@ BiGenePlot <-
     data <-
       FetchData(object = object,
                 vars = c(dims, 'ident', feature1, feature2)) %>%
-      mutate(value = ifelse(
-        !!sym(feature1) >= feature1.min & !!sym(feature2) >= feature2.min,
-        feature.both.name,
-        ifelse(
-          !!sym(feature1) >= feature1.min & !!sym(feature2) < feature1.min,
-          feature1.name,
-          ifelse(
-            !!sym(feature1) <= feature1.min & !!sym(feature2) >= feature1.min,
-            feature2.name,
-            feature.none.name
-          )
-        )
-      )) %>%
+      mutate(value = case_when(
+        (!!sym(feature1) >= feature1.min & !!sym(feature2) >= feature2.min) ~ feature.both.name,
+        (!!sym(feature1) >= feature1.min & !!sym(feature2) < feature2.min) ~ feature1.name,
+        (!!sym(feature1) < feature1.min & !!sym(feature2) >= feature2.min) ~ feature2.name,
+        (!!sym(feature1) < feature1.min & !!sym(feature2) < feature2.min)  ~ feature.none.name
+      )
+      ) %>%
       mutate(value = factor(
         value,
         levels = c(
@@ -104,7 +98,6 @@ BiGenePlot <-
         )
       )) %>%
       arrange(desc(value))
-
 
     p <- ggplot(data, aes_string(x = dims[1], y = dims[2])) +
       geom_point(aes(color = value)) +

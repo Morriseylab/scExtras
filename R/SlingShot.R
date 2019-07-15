@@ -58,6 +58,8 @@ plotPseudoTime = function(object,
                           dims = 1:2) {
   object[['ident']] <- Idents(object = object)
   group.by <- group.by %||% 'ident'
+  dims <- paste0(Key(object = object[[reduction]]), dims)
+
   curved <-
     bind_rows(lapply(names(object@misc$sds$data@curves), function(x) {
       c <- slingCurves(object@misc$sds$data)[[x]]
@@ -66,7 +68,6 @@ plotPseudoTime = function(object,
       return(d)
     }))
 
-  dims <- paste0(Key(object = object[[reduction]]), dims)
 
   data <- FetchData(object = object, vars = c(dims, group.by))
   p <- ggplot(data, aes_string(x = dims[1], y = dims[2])) +

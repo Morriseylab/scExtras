@@ -8,7 +8,7 @@
 #' @param q.use q. value cutoff
 #' @param reduction.name Dimension Reduction method
 #' @param reduction.key Dimension Reduction key
-#' @import dplyr tidyr Seurat broom parallelDist
+#' @import dplyr tidyr Seurat broom parallelDist destiny
 #' @export
 RunDiffusion <- function(
   object,

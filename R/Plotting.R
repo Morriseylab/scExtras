@@ -67,7 +67,7 @@ BiGenePlot <-
            dims = 1:2,
            reduction = "umap",
            pt.size = 0.1,
-           curve1 = NULL,
+           curve = NULL,
            title = NULL
   )
   {

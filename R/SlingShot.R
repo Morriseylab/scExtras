@@ -7,7 +7,7 @@
 #' @import dplyr tidyr Seurat slingshot
 #' @export
 #'
-runSlingshot  <- function(object,reduction='dm',group.by=NULL, start.clus=NULL,end.clus=NULL, approx_points = FALSE){
+runSlingshot  <- function(object,reduction='dm',group.by=NULL, start.clus=NULL,end.clus=NULL, approx_points = FALSE, allow.breaks=TRUE){
   rd <- Embeddings(object,reduction)
   cl <- Idents(object = object)
   group.by <- group.by %||% 'ident'

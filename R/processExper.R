@@ -8,6 +8,7 @@
 #' @param LowerFeatureCutoff Lower value for Feature cutoff
 #' @param UpperfeatureCutoff Upper bound, can be an integer or if set to MAD will be 3 median + 3*MAD
 #' @param UpperMitoCutoff Upper Mito Pecent cuoff default is 0.05
+#' @param sc.transform Define whether or not to apply scTransform function in seurat. T/F
 #' @return Seurat object
 #' @import dplyr tidyr Seurat
 #' @export
@@ -25,12 +26,12 @@ processExper <- function(dir,name,
                          sc.transform=F
 ){
   try(if(length(files)==0) stop("No files"))
-  
+
   if(UpperFeatureCutoff!="MAD" & !is.integer(UpperFeatureCutoff)) {
     stop("Please use MAD and numeric cutoff for UpperFeatureCount")
   }
-  
-  
+
+
   if(length(files)==1){
     # Load the dataset
     inputdata <- Read10X(data.dir =files[1])
@@ -46,56 +47,56 @@ processExper <- function(dir,name,
     for(i in 2:length(files)){
       tmp.data <- Read10X(data.dir =files[i])
       colnames(tmp.data) <- paste0(colnames(tmp.data), '-',name, '-rep',i)
-      
+
       tmp.object <- CreateSeuratObject(counts= tmp.data, min.cells = 10, min.features = 200, project = name)
       #cat('Rep', i, ": ", length(tmp.object@cell.names), "\n", sep="")
       object <- merge(object, tmp.object, do.normalize = FALSE, min.cells = 0, min.features = 0)
     }
     # cat("merged: ", length(object@cell.names), "\n", sep="")
   }
-  
+
   if(org=='mouse'){
     object[["percent.mito"]] <- PercentageFeatureSet(object, pattern = "^mt-")
   }else{
     object[["percent.mito"]] <- PercentageFeatureSet(object, pattern = "^MT-")
   }
-  
+
   VlnPlot(object = object, features = c("nFeature_RNA", "nCount_RNA", "percent.mito"),
           ncol = 3)
-  
+
   if(filter){
     #Using a median + 3 MAD cutoff for high genes.
     if(UpperFeatureCutoff=="MAD"){
       UpperFeatureCutoff <- median(object$nFeature_RNA) + 3*mad(object$nFeature_RNA)
     }
-    
+
     object@misc[["filterstats"]] <- list()
     object@misc[["filterstats"]][['TotalSamples']] <- dim(object[[]][1])[1]
-    
+
     cells.use <- colnames(object)[which(object[[]]['percent.mito'] < UpperMitoCutoff)]
     object@misc[["filterstats"]][['Mitofilter']] <- dim(object[[]][1])[1] - length(cells.use)
     object <- subset(object, cells = cells.use)
-    
+
     cells.use <- colnames(object)[which(object[[]]['nFeature_RNA'] > LowerFeatureCutoff)]
     object@misc[["filterstats"]][['LowFeatureFilter']] <- dim(object[[]][1])[1] - length(cells.use)
     object <- subset(object, cells = cells.use)
-    
+
     cells.use <- colnames(object)[which(object[[]]['nFeature_RNA'] < UpperFeatureCutoff)]
     object@misc[["filterstats"]][['HighFeatureFilter']] <- dim(object[[]][1])[1] - length(cells.use)
     object <- subset(object, cells = cells.use)
-    
-    
+
+
   }
   if(sc.transform==T){
-    
+
     if(ccscale==T){
       object <- NormalizeData(object = object)
-      
+
       #detection of variable genes
       #calculates the average expression and dispersion for each gene, places these genes into bins, and then calculates a z-score for dispersion within each bin
       object <-FindVariableFeatures(object = object,
                                     selection.method = "vst", nfeatures = 2000, verbose = FALSE)
-      
+
       if(org=='human'){
         #Assign scores in the CellCycleScoring function.Stores S and G2/M scores in object@meta.data, along with the predicted classification of each cell in either G2M, S or G1 phase
         object <- CellCycleScoring(object = object, s.features = cc.genes$s.genes, g2m.features = cc.genes$g2m.genes)
@@ -112,12 +113,12 @@ processExper <- function(dir,name,
   }else{
     #normalize data
     object <- NormalizeData(object = object)
-    
+
     #detection of variable genes
     #calculates the average expression and dispersion for each gene, places these genes into bins, and then calculates a z-score for dispersion within each bin
     object <-FindVariableFeatures(object = object,
                                   selection.method = "vst", nfeatures = 2000, verbose = FALSE)
-    
+
     if(org=='human'){
       #Assign scores in the CellCycleScoring function.Stores S and G2/M scores in object@meta.data, along with the predicted classification of each cell in either G2M, S or G1 phase
       object <- CellCycleScoring(object = object, s.features = cc.genes$s.genes, g2m.features = cc.genes$g2m.genes)
@@ -127,7 +128,7 @@ processExper <- function(dir,name,
       cc.genes$g2m.genes <- m2h %>% filter(human_name %in% cc.genes$g2m.genes) %>% pull(mouse_name)
       object <- CellCycleScoring(object = object, s.features  = cc.genes$s.genes, g2m.features = cc.genes$g2m.genes)
     }
-    
+
     if(ccscale==T){
       #Scaling the data and removing unwanted sources of variation
       object <- ScaleData(object = object, vars.to.regress = c("nCount_RNA", "percent.mito","S.Score", "G2M.Score"))

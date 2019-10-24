@@ -16,24 +16,25 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 
 #'Run all Dimension Reduction methods and find marker genes between clusters
 #' @param object Seurat object
-#' @param k n number of neighbors for umap
+#' @param n.neighbors n number of neighbors for umap
 #' @param dim
 #' @param DM Run diffusion map
 #' @param UMAP Run UMAP
 #' @param TSNE Run TSNE
-#' @param finfallnarkers T/F run findallmarkers
+#' @param finfallmarkers T/F run findallmarkers
 #' @param resolution Resolution param for FindCluster
-#' @param n.components How many compents to compute for Dim reductions (UMAP,DM,etc)
+#' @param n.components How many components to compute for Dim reductions (UMAP,DM,etc)
+#' @param min.dist minimum distance parameter for RunUMAP function. Controls how tightly to compress the umap points together
 #' @import dplyr tidyr Seurat
 #' @export
 
-ClusterDR <-function(object,k=30, dims,DM=F,UMAP=T,TSNE=T,findallmarkers=T,resolution=0.5,n.components=2){
+ClusterDR <-function(object,n.neighbors=30, dims,DM=F,UMAP=T,TSNE=T,findallmarkers=T,resolution=0.5,n.components=2,min.dist=0.3){
 
   if(TSNE==TRUE){
      object <- RunTSNE(object = object, reduction = "pca",dims = dims)
   }
   if(UMAP==TRUE){
-    object <- RunUMAP(object = object, reduction = "pca", n.neighbors = k,n.components = n.components,dims = dims)
+    object <- RunUMAP(object = object, reduction = "pca", n.neighbors = n.neighbors,n.components = n.components,dims = dims,min.dist=min.dist)
   }
   if(DM==TRUE){
     object <- RunDiffusion(object = object,dims=dims)

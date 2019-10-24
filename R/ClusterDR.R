@@ -21,7 +21,7 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 #' @param DM Run diffusion map
 #' @param UMAP Run UMAP
 #' @param TSNE Run TSNE
-#' @param finfallmarkers T/F run findallmarkers
+#' @param findallmarkers T/F run findallmarkers
 #' @param resolution Resolution param for FindCluster
 #' @param n.components How many components to compute for Dim reductions (UMAP,DM,etc)
 #' @param min.dist minimum distance parameter for RunUMAP function. Controls how tightly to compress the umap points together

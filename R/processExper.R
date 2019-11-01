@@ -64,13 +64,15 @@ processExper <- function(dir,name,
   VlnPlot(object = object, features = c("nFeature_RNA", "nCount_RNA", "percent.mito"),
           ncol = 3)
 
+  object@misc[["filterstats"]] <- list()
+  object@misc[["filterstats"]][['TotalCellsbeforefilteration']] <- dim(object)[2]
+
   if(filter){
     #Using a median + 3 MAD cutoff for high genes.
     if(UpperFeatureCutoff=="MAD"){
       UpperFeatureCutoff <- median(object$nFeature_RNA) + 3*mad(object$nFeature_RNA)
     }
 
-    object@misc[["filterstats"]] <- list()
     object@misc[["filterstats"]][['TotalSamples']] <- dim(object[[]][1])[1]
 
     cells.use <- colnames(object)[which(object[[]]['percent.mito'] < UpperMitoCutoff)]

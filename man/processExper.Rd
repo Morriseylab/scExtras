@@ -6,7 +6,7 @@
 \usage{
 processExper(dir, name, org = "mouse", files, ccscale = F,
   filter = T, LowerFeatureCutoff = 200, UpperFeatureCutoff = "MAD",
-  UpperMitoCutoff = 0.05)
+  UpperMitoCutoff = 5, sc.transform = F)
 }
 \arguments{
 \item{dir}{Directory containing the cellranger files for input}
@@ -24,6 +24,8 @@ processExper(dir, name, org = "mouse", files, ccscale = F,
 \item{LowerFeatureCutoff}{Lower value for Feature cutoff}
 
 \item{UpperMitoCutoff}{Upper Mito Pecent cuoff default is 0.05}
+
+\item{sc.transform}{Define whether or not to apply scTransform function in seurat. T/F}
 
 \item{UpperfeatureCutoff}{Upper bound, can be an integer or if set to MAD will be 3 median + 3*MAD}
 }

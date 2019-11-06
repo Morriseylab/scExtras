@@ -16,8 +16,10 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 
 #'Run all Dimension Reduction methods and find marker genes between clusters
 #' @param object Seurat object
+#' @param dim Which dimensions to use as input features
 #' @param n.neighbors n number of neighbors for umap
-#' @param dim
+#' @param k K prarma for find neifhbors
+#' @algorithm Algorithm for modularity optimization (1 = original Louvain algorithm; 2 = Louvain algorithm with multilevel refinement; 3 = SLM algorithm; 4 = Leiden algorithm). Leiden requires the leidenalg python.
 #' @param DM Run diffusion map
 #' @param UMAP Run UMAP
 #' @param TSNE Run TSNE
@@ -28,7 +30,7 @@ PCATools <- function(object,npcs=50,jackstraw=T,plotdir='./'){
 #' @import dplyr tidyr Seurat
 #' @export
 
-ClusterDR <-function(object,n.neighbors=30, dims,DM=F,UMAP=T,TSNE=T,findallmarkers=T,resolution=0.5,n.components=2,min.dist=0.3){
+ClusterDR <-function(object,dims,n.neighbors=30,k=20,algorithm=1,DM=F,UMAP=T,TSNE=T,findallmarkers=T,resolution=0.5,n.components=2,min.dist=0.3){
 
   if(TSNE==TRUE){
      object <- RunTSNE(object = object, reduction = "pca",dims = dims)

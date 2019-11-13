@@ -61,8 +61,11 @@ processExper <- function(dir,name,
     object[["percent.mito"]] <- PercentageFeatureSet(object, pattern = "^MT-")
   }
 
-  VlnPlot(object = object, features = c("nFeature_RNA", "nCount_RNA", "percent.mito"),
-          ncol = 3)
+  write.csv(object@meta.data, file=paste(dir,"/percentmito.csv",sep=""))
+  png(paste(dir,"/QC_Vlnplot.png",sep=""), width=10, height=6, units="in", res=300)
+  print({VlnPlot(object = object, features = c("nFeature_RNA", "nCount_RNA", "percent.mito"),
+                 ncol = 3)})
+  dev.off()
 
   object@misc[["filterstats"]] <- list()
   object@misc[["filterstats"]][['TotalCellsbeforefilteration']] <- dim(object)[2]

@@ -15,7 +15,8 @@
 #' @examples
 #' scrna = processExper(dir=prjdir,'test_prj',org='mouse',files=c("filtered_gene_bc_matrices/mm10"),ccscale=F,filter = T,LowerFeatureCutoff=200,UpperFeatureCutoff="MAD",UpperMitoCutoff=0.05)
 
-processExper <- function(dir,name,
+processExper <- function(dir,
+                         name,
                          org='mouse',
                          files,
                          ccscale=F,
@@ -30,6 +31,13 @@ processExper <- function(dir,name,
   if(UpperFeatureCutoff!="MAD" & !is.integer(UpperFeatureCutoff)) {
     stop("Please use MAD and numeric cutoff for UpperFeatureCount")
   }
+
+#Create a QC dir in the dir
+  qcdir <- paste0(dir,'/qc')
+  dir.create(qcdir,showWarnings = F)
+
+
+
 
 
   if(length(files)==1){
@@ -61,8 +69,8 @@ processExper <- function(dir,name,
     object[["percent.mito"]] <- PercentageFeatureSet(object, pattern = "^MT-")
   }
 
-  write.csv(object@meta.data, file=paste(dir,"/percentmito.csv",sep=""))
-  png(paste(dir,"/QC_Vlnplot.png",sep=""), width=10, height=6, units="in", res=300)
+  write.csv(object@meta.data, file=paste(qcdir,"/PreFilteredMetaData.csv",sep=""))
+  png(paste(qcdir,"/QC_Vlnplot.png",sep=""), width=10, height=6, units="in", res=300)
   print({VlnPlot(object = object, features = c("nFeature_RNA", "nCount_RNA", "percent.mito"),
                  ncol = 3)})
   dev.off()

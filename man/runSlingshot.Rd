@@ -4,9 +4,15 @@
 \alias{runSlingshot}
 \title{run Slingshot}
 \usage{
-runSlingshot(object, reduction = "dm", group.by = NULL,
-  start.clus = NULL, end.clus = NULL, approx_points = FALSE,
-  allow.breaks = TRUE)
+runSlingshot(
+  object,
+  reduction = "dm",
+  group.by = NULL,
+  start.clus = NULL,
+  end.clus = NULL,
+  approx_points = FALSE,
+  allow.breaks = TRUE
+)
 }
 \arguments{
 \item{object}{Seurat object}

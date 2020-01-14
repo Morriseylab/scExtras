@@ -4,30 +4,14 @@
 \alias{processExper}
 \title{Preprocess single cell RNA-seq data with seurat and return seurat object}
 \usage{
-processExper(dir, name, org = "mouse", files, ccscale = F,
-  filter = T, LowerFeatureCutoff = 200, UpperFeatureCutoff = "MAD",
-  UpperMitoCutoff = 5, sc.transform = F)
+processExper(object, ccscale = F, sc.transform = F)
 }
 \arguments{
-\item{dir}{Directory containing the cellranger files for input}
-
-\item{name}{Project name}
-
-\item{org}{Organism}
-
-\item{files}{path to the dir having the barcodes.tsv, genes.tsv and matrix.mtx files}
+\item{object}{Seurat object}
 
 \item{ccscale}{Specify whether to scale for cell cycle genes or not}
 
-\item{filter}{Specify whether to filter data}
-
-\item{LowerFeatureCutoff}{Lower value for Feature cutoff}
-
-\item{UpperMitoCutoff}{Upper Mito Pecent cuoff default is 0.05}
-
 \item{sc.transform}{Define whether or not to apply scTransform function in seurat. T/F}
-
-\item{UpperfeatureCutoff}{Upper bound, can be an integer or if set to MAD will be 3 median + 3*MAD}
 }
 \value{
 Seurat object
@@ -36,5 +20,5 @@ Seurat object
 Preprocess single cell RNA-seq data with seurat and return seurat object
 }
 \examples{
-scrna = processExper(dir=prjdir,'test_prj',org='mouse',files=c("filtered_gene_bc_matrices/mm10"),ccscale=F,filter = T,LowerFeatureCutoff=200,UpperFeatureCutoff="MAD",UpperMitoCutoff=0.05)
+scrna = processExper(object=scrna,ccscale=F,sc.transform =F)
 }

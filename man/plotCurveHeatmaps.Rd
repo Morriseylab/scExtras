@@ -4,8 +4,13 @@
 \alias{plotCurveHeatmaps}
 \title{Plot heatmap of the pseudotime data}
 \usage{
-plotCurveHeatmaps(object = NULL, curve = NULL,
-  annCol = "var_cluster", filename = "heatmap.png", n = 25)
+plotCurveHeatmaps(
+  object = NULL,
+  curve = NULL,
+  annCol = "var_cluster",
+  filename = "heatmap.png",
+  n = 25
+)
 }
 \arguments{
 \item{object}{Seurat object}

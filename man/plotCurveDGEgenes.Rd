@@ -4,8 +4,7 @@
 \alias{plotCurveDGEgenes}
 \title{Create feature plots of genes}
 \usage{
-plotCurveDGEgenes(object = NULL, curve = NULL, n = 25,
-  reduction = "dm")
+plotCurveDGEgenes(object = NULL, curve = NULL, n = 25, reduction = "dm")
 }
 \arguments{
 \item{object}{Seurat object}

@@ -4,9 +4,18 @@
 \alias{BiGenePlot}
 \title{bi_getValues utility function.}
 \usage{
-BiGenePlot(object, feature1, feature2, feature1.min = 1,
-  feature2.min = 1, dims = 1:2, reduction = "umap", pt.size = 0.1,
-  curve = NULL, title = NULL)
+BiGenePlot(
+  object,
+  feature1,
+  feature2,
+  feature1.min = 1,
+  feature2.min = 1,
+  dims = 1:2,
+  reduction = "umap",
+  pt.size = 0.1,
+  curve = NULL,
+  title = NULL
+)
 }
 \arguments{
 \item{object}{Seurat object}

@@ -4,14 +4,27 @@
 \alias{ClusterDR}
 \title{Run all Dimension Reduction methods and find marker genes between clusters}
 \usage{
-ClusterDR(object, n.neighbors = 30, dims, DM = F, UMAP = T,
-  TSNE = T, findallmarkers = T, resolution = 0.5, n.components = 2,
-  min.dist = 0.3)
+ClusterDR(
+  object,
+  dims,
+  n.neighbors = 30,
+  k = 20,
+  algorithm = 1,
+  DM = F,
+  UMAP = T,
+  TSNE = T,
+  findallmarkers = T,
+  resolution = 0.5,
+  n.components = 2,
+  min.dist = 0.3
+)
 }
 \arguments{
 \item{object}{Seurat object}
 
 \item{n.neighbors}{n number of neighbors for umap}
+
+\item{k}{K prarma for find neifhbors}
 
 \item{DM}{Run diffusion map}
 
@@ -26,6 +39,8 @@ ClusterDR(object, n.neighbors = 30, dims, DM = F, UMAP = T,
 \item{n.components}{How many components to compute for Dim reductions (UMAP,DM,etc)}
 
 \item{min.dist}{minimum distance parameter for RunUMAP function. Controls how tightly to compress the umap points together}
+
+\item{dim}{Which dimensions to use as input features}
 }
 \description{
 Run all Dimension Reduction methods and find marker genes between clusters

@@ -8,20 +8,7 @@
 #' @examples
 #' scrna = processExper(object=scrna,ccscale=F,sc.transform =F)
 
-<<<<<<< HEAD
 processExper <- function(object,ccscale=F,sc.transform=F){
-=======
-processExper <- function(dir,
-                         name,
-                         org='mouse',
-                         files,
-                         ccscale=F,
-                         filter = T,
-                         LowerFeatureCutoff=200,
-                         UpperFeatureCutoff="MAD",
-                         UpperMitoCutoff=5,
-                         sc.transform=F
-){
   try(if(length(files)==0) stop("No files"))
 
   if(UpperFeatureCutoff!="MAD" & !is.integer(UpperFeatureCutoff)) {
@@ -96,7 +83,7 @@ processExper <- function(dir,
 
 
   }
->>>>>>> 53c8b43724a594382e30bd5cc7b20f668898b84d
+
   if(sc.transform==T){
 
     if(ccscale==T){

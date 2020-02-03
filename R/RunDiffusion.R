@@ -3,9 +3,9 @@
 #' @param dims number of dimensions
 #' @param reduction reductionm method. Defaults to pca
 #' @param features vector of gene names
-#' @param assay Assay name. Defaults to 'RNA'
 #' @param max.dim maximum dimensions
-#' @param q.use q. value cutoff
+#' @param sigma Diffusion scale parameter of the Gaussian kernel. One of 'local', 'global', a (numeric) global sigma or a Sigmas object. When choosing 'global', a global sigma will be calculated using find_sigmas. (Optional. default: 'local') A larger sigma might be necessary if the eigenvalues can not be found because of a singularity in the matrix
+#' @param distance Distance measurement method applied to data or a distance matrix/dist. For the allowed values, see find_knn. If this is a sparseMatrix, zeros are interpreted as "not a close neighbors", which allows the use of kNN-sparsified matrices (see the return value of find_knn.
 #' @param reduction.name Dimension Reduction method
 #' @param reduction.key Dimension Reduction key
 #' @import dplyr tidyr Seurat broom parallelDist destiny
@@ -15,9 +15,10 @@ RunDiffusion <- function(
   dims = 1:5,
   reduction = 'pca',
   features = NULL,
-  assay = 'RNA',
+  #assay = 'RNA',
   max.dim = 3L,
-  q.use = 0.01,
+  sigma = "local",
+  distance='euclidean',
   reduction.name = "dm",
   reduction.key = "DM_",
   ...
@@ -29,8 +30,12 @@ RunDiffusion <- function(
     data.use <- t(x = GetAssayData(object = object, slot = 'data', assay = assay)[features, ])
   }
 
-  data.dist <- parallelDist::parDist(data.use)
-  data.diffusion <- data.frame(destiny::DiffusionMap(data = as.matrix(data.dist)+1,n_eigs = max.dim)@eigenvectors)
+  #data.dist <- parallelDist::parDist(data.use)
+  #data.diffusion <- data.frame(destiny::DiffusionMap(data = as.matrix(data.dist)+1,n_eigs = max.dim)@eigenvectors)
+
+  data.diffusion <- data.frame(destiny::DiffusionMap(data.use,sigma=sigma,distance = distance,n_eigs = max.dim)@eigenvectors)
+
+
 
   colnames(x = data.diffusion) <- paste0(reduction.key, 1:ncol(x = data.diffusion))
   rownames(x = data.diffusion) <-  rownames(data.use)
@@ -51,7 +56,6 @@ RunDiffusion <- function(
 
 
   object[[reduction.name]] <- dm.reduction
-
 
 
   #object <- LogSeuratCommand(object = object)

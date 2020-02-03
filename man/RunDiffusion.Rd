@@ -9,9 +9,9 @@ RunDiffusion(
   dims = 1:5,
   reduction = "pca",
   features = NULL,
-  assay = "RNA",
   max.dim = 3L,
-  q.use = 0.01,
+  sigma = "local",
+  distance = "euclidean",
   reduction.name = "dm",
   reduction.key = "DM_",
   ...
@@ -26,11 +26,11 @@ RunDiffusion(
 
 \item{features}{vector of gene names}
 
-\item{assay}{Assay name. Defaults to 'RNA'}
-
 \item{max.dim}{maximum dimensions}
 
-\item{q.use}{q. value cutoff}
+\item{sigma}{Diffusion scale parameter of the Gaussian kernel. One of 'local', 'global', a (numeric) global sigma or a Sigmas object. When choosing 'global', a global sigma will be calculated using find_sigmas. (Optional. default: 'local') A larger sigma might be necessary if the eigenvalues can not be found because of a singularity in the matrix}
+
+\item{distance}{Distance measurement method applied to data or a distance matrix/dist. For the allowed values, see find_knn. If this is a sparseMatrix, zeros are interpreted as "not a close neighbors", which allows the use of kNN-sparsified matrices (see the return value of find_knn.}
 
 \item{reduction.name}{Dimension Reduction method}
 

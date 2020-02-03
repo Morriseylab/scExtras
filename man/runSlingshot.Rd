@@ -11,7 +11,9 @@ runSlingshot(
   start.clus = NULL,
   end.clus = NULL,
   approx_points = FALSE,
-  allow.breaks = TRUE
+  allow.breaks = TRUE,
+  extend = "n",
+  stretch = 0
 )
 }
 \arguments{
@@ -22,6 +24,12 @@ runSlingshot(
 \item{start.clus}{start cluster}
 
 \item{end.clus}{end cluster}
+
+\item{allow.breaks}{logical, determines whether curves that branch very close to the origin should be allowed to have different starting points.}
+
+\item{extend}{acter, how to handle root and leaf clusters of lineages when constructing the initial, piece-wise linear curve. Accepted values are 'y' (default), 'n', and 'pc1'. See 'Details' for more.}
+
+\item{stretch}{numeric factor by which curves can be extrapolated beyond endpoints. Default is 2, see principal_curve.}
 
 \item{group, by}{groups}
 }

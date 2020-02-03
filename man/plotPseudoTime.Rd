@@ -4,7 +4,13 @@
 \alias{plotPseudoTime}
 \title{run Pseudotime}
 \usage{
-plotPseudoTime(object, group.by = NULL, reduction = "dm", dims = 1:2)
+plotPseudoTime(
+  object,
+  sds = NULL,
+  group.by = NULL,
+  reduction = "dm",
+  dims = 1:2
+)
 }
 \arguments{
 \item{object}{Seurat object}

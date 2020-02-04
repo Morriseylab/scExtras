@@ -68,7 +68,7 @@ plotPseudoTime = function(object,
   dims <- paste0(Key(object = object[[reduction]]), dims)
 
   curved <-
-    bind_rows(lapply(names(getCurves(sds)), function(x) {
+    bind_rows(lapply(names(slingCurves(sds)), function(x) {
       c <- slingCurves(sds)[[x]]
       d <- as.data.frame(c$s[c$ord, dims])
       d$curve <- x

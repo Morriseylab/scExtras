@@ -61,7 +61,9 @@ plotPseudoTime = function(object,
                           sds=NULL,
                           group.by = NULL,
                           reduction = 'dm',
-                          dims = 1:2
+                          dims = 1:2,
+                          cols=NULL,
+                          label=T
                           ) {
   object[['ident']] <- Idents(object = object)
   group.by <- group.by %||% 'ident'
@@ -76,7 +78,7 @@ plotPseudoTime = function(object,
     }))
 
 
-  DimPlot(sub,cols=cpallette,label = T,group.by = group.by) +
+  DimPlot(sub,cols=cols,label = label,group.by = group.by,reduction = reduction) +
     geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
 
 

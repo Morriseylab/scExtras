@@ -49,18 +49,21 @@ runPseudoTimeDGE <- function(object){
 
 }
 
-#'run Pseudotime
+#'CurvePlot Plot Slingshot Curves
 #' @param object Seurat object
+#' @param sds Slingshot Data object
 #' @param group.by variable to group by
-#' @param reduction Which dimensionality reduction to use
+#' @param reduction Which dimensionality reduction to use, default UMAP
 #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
+#' @param cols Color palette
+#' @param label Label plots
 #' @import dplyr tidyr Seurat ggplot2
 #' @export
 #'
-plotPseudoTime = function(object,
+CurvePlot = function(object,
                           sds=NULL,
                           group.by = NULL,
-                          reduction = 'dm',
+                          reduction = 'umap',
                           dims = 1:2,
                           cols=NULL,
                           label=T

@@ -81,7 +81,7 @@ CurvePlot = function(object,
     }))
 
 
-  DimPlot(sub,cols=cols,label = label,group.by = group.by,reduction = reduction) +
+  DimPlot(object,cols=cols,label = label,group.by = group.by,reduction = reduction) +
     geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
 
 

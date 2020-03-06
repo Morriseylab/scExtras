@@ -18,7 +18,7 @@ runSlingshot  <- function(object,sds.name='sds',reduction='dm',group.by=NULL, st
   ### Need to fix this not working
   #group.by <- group.by %||% 'ident'
   #cl <- FetchData(object = object, vars = group.by) %>% pull(`group.by`)
-
+  Idents(object)<- group.by
   object@misc[[sds.name]] <-  list("dr"=reduction,"data"=slingshot(rd,cl,start.clus=start.clus,end.clus=end.clus,approx_points=approx_points,allow.breaks=allow.breaks,extend=extend,stretch=stretch))
   #ps <- slingPseudotime(object@misc[['sds']]$data)
   #object@meta.data[,colnames(ps)] <- as.data.frame(ps)

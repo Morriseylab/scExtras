@@ -14,6 +14,8 @@
 #'
 runSlingshot  <- function(object,sds.name='sds',reduction='dm',group.by=NULL, start.clus=NULL,end.clus=NULL, approx_points = FALSE, allow.breaks=TRUE, extend='n',stretch=0){
   rd <- Embeddings(object,reduction)
+
+  #Set ident to groupby option
   Idents(object)<- group.by
   cl <- Idents(object = object)
   ### Need to fix this not working

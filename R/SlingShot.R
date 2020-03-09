@@ -16,7 +16,10 @@ runSlingshot  <- function(object,sds.name='sds',reduction='dm',group.by=NULL, st
   rd <- Embeddings(object,reduction)
 
   #Set ident to groupby option
-  Idents(object)<- group.by
+  if(!is.null(group.by)){
+      Idents(object)<- group.by
+  }
+
   cl <- Idents(object = object)
   ### Need to fix this not working
   #group.by <- group.by %||% 'ident'

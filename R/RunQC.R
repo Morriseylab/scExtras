@@ -14,7 +14,8 @@
 #' @examples
 #' scrna = processExper(dir=prjdir,'test_prj',org='mouse',files=c("filtered_gene_bc_matrices/mm10"),ccscale=F,filter = T,LowerFeatureCutoff=200,UpperFeatureCutoff="MAD",UpperMitoCutoff=0.05)
 
-RunQC <- function(dir,name,
+RunQC <- function(dir,
+                  name,
                   org='mouse',
                   files,
                   filter = T,
@@ -32,18 +33,31 @@ RunQC <- function(dir,name,
 
   if(length(files)==1){
     # Load the dataset
-    inputdata <- Read10X(data.dir =files[1])
+    if(dir.exists(files[1])){
+      inputdata <- Read10X(data.dir =files[1])
+    }else{
+      inputdata <- Read10X_h5(filename =files[1])
+    }
     colnames(inputdata) <- paste0(colnames(inputdata), '-',name)
     # Initialize the Seurat object with the raw (non-normalized data).
     object <- CreateSeuratObject(counts= inputdata, min.cells = 10, min.features = 200,project = name)
   }else{
     #Initialize the first object with the raw (non-normalized data) and add rest of the data
-    inputdata <- Read10X(data.dir =files[1])
+    if(dir.exists(path)){
+      inputdata <- Read10X(data.dir =files[1])
+    }else{
+      inputdata <- Read10X_h5(filename =files[1])
+    }
     colnames(inputdata) <- paste0(colnames(inputdata), '-',name, '-rep1')
     object <- CreateSeuratObject(counts= inputdata, min.cells = 10, min.features = 200, project = name)
     #cat('Rep1', length(object@cell.names), "\n")
     for(i in 2:length(files)){
-      tmp.data <- Read10X(data.dir =files[i])
+      if(dir.exists(files[i])){
+        tmp.data <- Read10X(data.dir =files[1])
+      }else{
+        tmp.data <- Read10X_h5(filename =files[i])
+      }
+
       colnames(tmp.data) <- paste0(colnames(tmp.data), '-',name, '-rep',i)
 
       tmp.object <- CreateSeuratObject(counts= tmp.data, min.cells = 10, min.features = 200, project = name)

@@ -9,7 +9,7 @@
 #' @param allow.breaks logical, determines whether curves that branch very close to the origin should be allowed to have different starting points.
 #' @param extend acter, how to handle root and leaf clusters of lineages when constructing the initial, piece-wise linear curve. Accepted values are 'y' (default), 'n', and 'pc1'. See 'Details' for more.
 #' @param stretch numeric factor by which curves can be extrapolated beyond endpoints. Default is 2, see principal_curve.
-#' @import dplyr tidyr Seurat slingshot
+#' @import dplyr tidyr Seurat slingshot complexheatmap
 #' @export
 #'
 runSlingshot  <- function(object,sds.name='sds',reduction='dm',group.by=NULL, start.clus=NULL,end.clus=NULL, approx_points = FALSE, allow.breaks=TRUE, extend='n',stretch=0){
@@ -113,32 +113,68 @@ CurvePlot = function(object,
 
 #'Plot heatmap of the pseudotime data
 #' @param object Seurat object
-#' @param curve curve to be plotted
-#' @param filename output filename
-#' @param n number of genes to plot. Default is 25
+#' @param sdsname Name of Slingshot object stored in Seurat Object
+#' @param features Vector of genes to be plotted
+#' @param lineage THe linage to be plotted such as lineage1
+#' @param col Color palette, this vector needs to have the names be the cell types or cluster names
 #' @import dplyr tidyr Seurat
 #' @export
 #'
-plotCurveHeatmaps <-
-  function(object = NULL,
-           curve = NULL,
-           annCol= 'var_cluster',
-           filename = 'heatmap.png',
-           n = 25) {
-    cells <- object@meta.data %>% tibble::rownames_to_column('cellid')  %>% dplyr::arrange(!!sym(curve)) %>% filter(!is.na(!!sym(curve)))
-    genes <- object@misc$sds$dge[[curve]] %>% dplyr::arrange(p.value) %>% head(n) %>% pull(gene)
-    FetchData(object=object, vars=genes, cells=cells$cellid) %>% t(.) %>%
-      NMF::aheatmap(
-        .,
-        Colv = NA,
-        distfun = 'pearson',
-        scale = 'row',
-        annCol = cells[[annCol]],
-        annColors = list(X1 = cpallette),
-        filename = filename
-      )
+plotlineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
 
-  }
+  ## Maybe add curve is user puts in integer
+
+  sds <- object@misc[[sdsname]]$data
+
+  ### Should add a check for lineages in model
+
+  qlineage <- quo(lineage)
+
+  cells <- inner_join(
+    slingCurveWeights(sds,as.probs=T) %>% as.data.frame() %>%
+      setNames(gsub('curve','lineage',names(.))) %>%
+      rownames_to_column('cellid') %>%
+      gather(curve,w,-cellid) %>%
+      group_by(cellid) %>%
+      top_n(n=1,wt=w) %>%
+      filter(curve==!!lineage),
+    slingPseudotime(sub@misc$umap_cl3$data) %>% as.data.frame %>%
+      setNames(gsub('curve','lineage',names(.))) %>%
+      rownames_to_column('cellid') %>%
+      select(cellid,!!qlineage) %>%
+      dplyr::rename('time'=lineage)
+  ) %>% arrange(time) %>%
+    inner_join(., object@meta.data %>% rownames_to_column('cellid') )
+
+  data <- FetchData(object=object, vars=features,cells=cells$cellid) %>% t(.)
+  mat_scaled = t(scale(t(data)))
+
+  f1=circlize::colorRamp2(c(-2,0,2), c('skyblue1', "grey10","yellow"))
+
+
+  col_fun =circlize::colorRamp2(c(0, 20), c("blue", "red"))
+
+  ha = HeatmapAnnotation(
+    pseudotime=anno_lines(cells$time),
+    celltype = cells$var_celltype,
+    col = list(celltype = cellcolorpal
+    ))
+
+  ht1 <- Heatmap(mat_scaled,
+                 col=f1,
+                 show_row_dend = F,
+                 row_names_side='left',
+                 show_column_names = F,
+                 cluster_columns = F,
+                 cluster_rows = F,
+                 top_annotation = ha
+  )
+  ht1
+
+
+
+}
+
 
 
 #'Create feature plots of genes

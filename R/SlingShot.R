@@ -120,7 +120,7 @@ CurvePlot = function(object,
 #' @import dplyr tidyr Seurat ComplexHeatmap
 #' @export
 #'
-plotlineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
+plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
 
   ## Maybe add curve is user puts in integer
 
@@ -138,7 +138,7 @@ plotlineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
       group_by(cellid) %>%
       top_n(n=1,wt=w) %>%
       filter(curve==!!lineage),
-    slingPseudotime(sub@misc$umap_cl3$data) %>% as.data.frame %>%
+    slingPseudotime(sds) %>% as.data.frame %>%
       setNames(gsub('curve','lineage',names(.))) %>%
       rownames_to_column('cellid') %>%
       select(cellid,!!qlineage) %>%

@@ -9,7 +9,7 @@
 #' @param allow.breaks logical, determines whether curves that branch very close to the origin should be allowed to have different starting points.
 #' @param extend acter, how to handle root and leaf clusters of lineages when constructing the initial, piece-wise linear curve. Accepted values are 'y' (default), 'n', and 'pc1'. See 'Details' for more.
 #' @param stretch numeric factor by which curves can be extrapolated beyond endpoints. Default is 2, see principal_curve.
-#' @import dplyr tidyr Seurat slingshot complexheatmap
+#' @import dplyr tidyr Seurat slingshot
 #' @export
 #'
 runSlingshot  <- function(object,sds.name='sds',reduction='dm',group.by=NULL, start.clus=NULL,end.clus=NULL, approx_points = FALSE, allow.breaks=TRUE, extend='n',stretch=0){
@@ -117,7 +117,7 @@ CurvePlot = function(object,
 #' @param features Vector of genes to be plotted
 #' @param lineage THe linage to be plotted such as lineage1
 #' @param col Color palette, this vector needs to have the names be the cell types or cluster names
-#' @import dplyr tidyr Seurat
+#' @import dplyr tidyr Seurat ComplexHeatmap
 #' @export
 #'
 plotlineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){

@@ -157,10 +157,10 @@ plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
   ha = HeatmapAnnotation(
     pseudotime=anno_lines(cells$time),
     celltype = cells$var_celltype,
-    col = list(celltype = cellcolorpal
+    col = list(celltype = col
     ))
 
-  ht1 <- Heatmap(mat_scaled,
+  ht <- Heatmap(mat_scaled,
                  col=f1,
                  show_row_dend = F,
                  row_names_side='left',
@@ -169,7 +169,7 @@ plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
                  cluster_rows = F,
                  top_annotation = ha
   )
-  ht1
+  return(ht)
 
 
 

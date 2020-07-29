@@ -43,7 +43,7 @@ RunQC <- function(dir,
     object <- CreateSeuratObject(counts= inputdata, min.cells = 10, min.features = 200,project = name)
   }else{
     #Initialize the first object with the raw (non-normalized data) and add rest of the data
-    if(dir.exists(path)){
+    if(dir.exists(files[1])){
       inputdata <- Read10X(data.dir =files[1])
     }else{
       inputdata <- Read10X_h5(filename =files[1])

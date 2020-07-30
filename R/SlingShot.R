@@ -125,7 +125,7 @@ plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
   ## Maybe add curve is user puts in integer
 
   sds <- object@misc[[sdsname]]$data
-
+  clusterinlineage <- slingLineages(sds)[[stringr::str_to_title(lineage)]]
   ### Should add a check for lineages in model
 
   qlineage <- quo(lineage)
@@ -144,7 +144,9 @@ plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
       select(cellid,!!qlineage) %>%
       dplyr::rename('time'=lineage)
   ) %>% arrange(time) %>%
-    inner_join(., object@meta.data %>% rownames_to_column('cellid') )
+    inner_join(., object@meta.data %>% rownames_to_column('cellid')) %>%
+    filter(var_celltype %in% clusterinlineage) %>%
+    mutate(var_celltype=factor(var_celltype,levels=clusterinlineage))
 
   data <- FetchData(object=object, vars=features,cells=cells$cellid) %>% t(.)
   mat_scaled = t(scale(t(data)))

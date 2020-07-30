@@ -157,7 +157,8 @@ plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
   col_fun =circlize::colorRamp2(c(0, 20), c("blue", "red"))
 
   ha = HeatmapAnnotation(
-    pseudotime=anno_lines(cells$time),
+    #pseudotime=anno_lines(cells$time),
+    pseudotime=anno_barplot(cells$time, gp = gpar(col = "#296EFA"),border = F,bar_width = 1),
     celltype = cells$var_celltype,
     col = list(celltype = col
     ))

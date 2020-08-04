@@ -92,7 +92,61 @@ CurvePlot = function(object,
     geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
 
 
+  #'CurvePlot Plot Slingshot Curves
+  #' @param object Seurat object
+  #' @param sds Slingshot Data object
+  #' @param reduction Which dimensionality reduction to use, default UMAP
+  #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
+  #' @param cols Color palette
+  #' @import dplyr tidyr Seurat ggplot2
+  #' @export
+  #'
+  LineageFeaturePlot <- function(object,sds,lineage='lineage1', reduction='umap',dims=1:2,cols='RdYlBu', group.by=NULL){
+    qlineage <- quo(lineage)
+    group.by<- enquo(group.by)
+    #group.by <- group.by %||% 'ident'
+    if (is.null(x = group.by)) {
+      stop("Please Enter the variable that was used to define groups in Slingshot, ie var_celltype, var_cluster etc.")
+    }
 
+
+    curve <- gsub('lineage','curve',lineage)
+    clusterinlineage <- slingLineages(sds)[[stringr::str_to_title(lineage)]]
+
+    #object[['pseudotime']] <-
+    slingPseudotime(sds, na = FALSE) %>% as.data.frame(.) %>%
+      rownames_to_column('cellid') %>%
+      setNames(gsub("curve", "lineage", names(.))) %>%
+      left_join(object@meta.data %>% rownames_to_column('cellid'),.) %>%
+      rename(pseudotime = !!qlineage) %>%
+      mutate(pseudotime=ifelse(var_cluster %in% clusterinlineage,pseudotime,NA ))%>%
+      pull(pseudotime)
+
+    dims <- paste0(Key(object = object[[reduction]]), dims)
+
+    # curved <-
+    #   bind_rows(lapply(names(slingCurves(sds)), function(x) {
+    #     c <- slingCurves(sds)[[x]]
+    #     d <- as.data.frame(c$s[c$ord, dims])
+    #     d$curve <- x
+    #     return(d)
+    #   }))
+    #
+
+
+    c <- slingCurves(sds)[[curve]]
+    curved <- as.data.frame(c$s[c$ord, dims])
+    curved$curve <- lineage
+
+
+    FeaturePlot(object,features = 'pseudotime',order = T) +
+      scale_color_distiller(palette = cols,  na.value = 'grey90') +
+      geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1) +
+      ggtitle(lineage) +
+      coord_equal() + ggplot2::theme_void()
+
+
+  }
 
   # data <- FetchData(object = object, vars = c(dims, group.by))
   # p <- ggplot(data, aes_string(x = dims[1], y = dims[2])) +

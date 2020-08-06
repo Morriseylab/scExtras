@@ -90,18 +90,18 @@ CurvePlot = function(object,
 
   DimPlot(object,cols=cols,label = label,group.by = group.by,reduction = reduction) +
     geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
+}
 
-
-  #'CurvePlot Plot Slingshot Curves
-  #' @param object Seurat object
-  #' @param sds Slingshot Data object
-  #' @param reduction Which dimensionality reduction to use, default UMAP
-  #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
-  #' @param cols Color palette
-  #' @import dplyr tidyr Seurat ggplot2
-  #' @export
-  #'
-  LineageFeaturePlot <- function(object,sds,lineage='lineage1', reduction='umap',dims=1:2,cols='RdYlBu', group.by=NULL){
+#'CurvePlot Plot Slingshot Curves
+#' @param object Seurat object
+#' @param sds Slingshot Data object
+#' @param reduction Which dimensionality reduction to use, default UMAP
+#' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
+#' @param cols Color palette
+#' @import dplyr tidyr Seurat ggplot2
+#' @export
+#'
+LineageFeaturePlot <- function(object,sds,lineage='lineage1', reduction='umap',dims=1:2,cols='RdYlBu', group.by=NULL){
     qlineage <- quo(lineage)
     group.by<- enquo(group.by)
     #group.by <- group.by %||% 'ident'
@@ -145,24 +145,8 @@ CurvePlot = function(object,
       ggtitle(lineage) +
       coord_equal() + ggplot2::theme_void()
 
-
   }
 
-  # data <- FetchData(object = object, vars = c(dims, group.by))
-  # p <- ggplot(data, aes_string(x = dims[1], y = dims[2])) +
-  #   geom_point(aes(color =!!sym(group.by))) +
-  #   theme(legend.position = "top")
-  #
-  # if (is.character(data[[group.by]]) | is.factor(data[[group.by]])){
-  #   p <- p + guides(col = guide_legend(nrow = 2))
-  # } else {
-  #   p <- p + scale_color_distiller(palette = "RdYlBu", na.value = 'grey90')
-  # }
-  # p <- p +geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
-  # p
-
-
-}
 
 
 #'Plot heatmap of the pseudotime data
@@ -171,7 +155,7 @@ CurvePlot = function(object,
 #' @param features Vector of genes to be plotted
 #' @param lineage THe linage to be plotted such as lineage1
 #' @param col Color palette, this vector needs to have the names be the cell types or cluster names
-#' @import dplyr tidyr Seurat ComplexHeatmap
+#' @import dplyr Seurat
 #' @export
 #'
 plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){

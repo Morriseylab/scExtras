@@ -113,7 +113,7 @@ LineageFeaturePlot <- function(object,sds,lineage='lineage1', reduction='umap',d
     curve <- gsub('lineage','curve',lineage)
     clusterinlineage <- slingLineages(sds)[[stringr::str_to_title(lineage)]]
 
-    #object[['pseudotime']] <-
+    object[['pseudotime']] <-
     slingPseudotime(sds, na = FALSE) %>% as.data.frame(.) %>%
       rownames_to_column('cellid') %>%
       setNames(gsub("curve", "lineage", names(.))) %>%

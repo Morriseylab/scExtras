@@ -126,6 +126,48 @@ p
 
   }
 
+#'Function to plot multiple genes in a single Violin plot
+#' @param object Seurat object
+#' @param features genes to plot
+#' @param group.by variable to group the cells by
+#' @param cols Colors
+#' @param orientation orientation to order the plots horizontally (single row) or vertically (single column)
+#' @export
+celltypeVlnPlot <- function(object, features,group.by='var_cluster',cols,orientation="vertical"){
+
+  d <- FetchData(object,c(features,group.by)) %>% tidyr::gather(gene,signal,-`group.by`)
+  d$gene <- factor(d$gene,levels=features)
+  gp=eval(parse(text = paste0("d$",group.by,sep="")))
+  d[,1] <- factor(gp,levels= sort(unique(gp)))
+  if (orientation=="horizontal"){
+    ggplot(d,aes_string(x=group.by,y="signal",color=group.by,fill=group.by)) +
+      geom_violin() + facet_wrap(~gene,scales='free_x',nrow = 1) +
+      theme_base() + coord_flip() +
+      scale_fill_manual(values=cols) + scale_color_manual(values=cols) +
+      scale_x_discrete(limits = levels(gp)) +
+      theme(legend.position="none",
+            axis.title.y=element_blank(),
+            axis.title.x=element_blank(),
+            axis.text.x=element_blank(),
+            axis.ticks.x=element_blank(),
+            strip.text.x = element_text(face = "bold.italic")
+      )
+  }else if(orientation =="vertical"){
+    ggplot(d,aes_string(x=group.by,y="signal",color=group.by,fill=group.by)) +
+      geom_violin() + facet_wrap(~gene,scales='free_x',ncol = 1) +
+      theme_base() +
+      scale_fill_manual(values=cols) + scale_color_manual(values=cols) +
+      scale_x_discrete(limits = levels(gp)) +
+      theme(legend.position="none",
+            axis.title.y=element_blank(),
+            axis.title.x=element_blank(),
+            axis.text.x=element_blank(),
+            axis.ticks.x=element_blank(),
+            strip.text.x = element_text(face = "bold.italic")
+      )
+  }
+}
+
 
 #' Visualize 'features' on a dimensional reduction plot
 #'

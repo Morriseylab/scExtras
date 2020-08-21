@@ -98,12 +98,13 @@ CurvePlot = function(object,
 #' @param reduction Which dimensionality reduction to use, default UMAP
 #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
 #' @param cols Color palette
+#' @param group.by Cluster variable used in slingshot
 #' @import dplyr tidyr Seurat ggplot2
 #' @export
 #'
 LineageFeaturePlot <- function(object,sds,lineage='lineage1', reduction='umap',dims=1:2,cols='RdYlBu', group.by=NULL){
     qlineage <- quo(lineage)
-    group.by<- enquo(group.by)
+    group.by<- sym(group.by)
     #group.by <- group.by %||% 'ident'
     if (is.null(x = group.by)) {
       stop("Please Enter the variable that was used to define groups in Slingshot, ie var_celltype, var_cluster etc.")
@@ -119,7 +120,7 @@ LineageFeaturePlot <- function(object,sds,lineage='lineage1', reduction='umap',d
       setNames(gsub("curve", "lineage", names(.))) %>%
       left_join(object@meta.data %>% rownames_to_column('cellid'),.) %>%
       rename(pseudotime = !!qlineage) %>%
-      mutate(pseudotime=ifelse(var_cluster %in% clusterinlineage,pseudotime,NA ))%>%
+      mutate(pseudotime=ifelse(!!group.by %in% clusterinlineage,pseudotime,NA ))%>%
       pull(pseudotime)
 
     dims <- paste0(Key(object = object[[reduction]]), dims)
@@ -155,17 +156,21 @@ LineageFeaturePlot <- function(object,sds,lineage='lineage1', reduction='umap',d
 #' @param features Vector of genes to be plotted
 #' @param lineage THe linage to be plotted such as lineage1
 #' @param col Color palette, this vector needs to have the names be the cell types or cluster names
+#' @param group.by Cluster variable used in slingshot
 #' @import dplyr Seurat
 #' @export
 #'
-plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
+plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col, group.by=NULL){
+  if (is.null(x = group.by)) {
+    stop("Please Enter the variable that was used to define groups in Slingshot, ie var_celltype, var_cluster etc.")
+  }
 
   ## Maybe add curve is user puts in integer
 
   sds <- object@misc[[sdsname]]$data
   clusterinlineage <- slingLineages(sds)[[stringr::str_to_title(lineage)]]
   ### Should add a check for lineages in model
-
+  group.by <- sym(group.by)
   qlineage <- quo(lineage)
 
   cells <- inner_join(
@@ -183,8 +188,8 @@ plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
       dplyr::rename('time'=lineage)
   ) %>% arrange(time) %>%
     inner_join(., object@meta.data %>% rownames_to_column('cellid')) %>%
-    filter(var_celltype %in% clusterinlineage) %>%
-    mutate(var_celltype=factor(var_celltype,levels=clusterinlineage))
+    filter(!!group.by %in% clusterinlineage) %>%
+    mutate(group_by=factor(group.by,levels=clusterinlineage))
 
   data <- FetchData(object=object, vars=features,cells=cells$cellid) %>% t(.)
   mat_scaled = t(scale(t(data)))
@@ -197,7 +202,7 @@ plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col){
   ha = HeatmapAnnotation(
     #pseudotime=anno_lines(cells$time),
     pseudotime=anno_barplot(cells$time, gp = gpar(col = "#296EFA"),border = F,bar_width = 1),
-    celltype = cells$var_celltype,
+    celltype = cells %>% pull(group.by),
     col = list(celltype = col
     ))
 

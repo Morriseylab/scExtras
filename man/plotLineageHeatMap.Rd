@@ -4,7 +4,14 @@
 \alias{plotLineageHeatMap}
 \title{Plot heatmap of the pseudotime data}
 \usage{
-plotLineageHeatMap(object, sdsname, features, lineage = "lineage1", col)
+plotLineageHeatMap(
+  object,
+  sdsname,
+  features,
+  lineage = "lineage1",
+  col,
+  group.by = NULL
+)
 }
 \arguments{
 \item{object}{Seurat object}
@@ -16,6 +23,8 @@ plotLineageHeatMap(object, sdsname, features, lineage = "lineage1", col)
 \item{lineage}{THe linage to be plotted such as lineage1}
 
 \item{col}{Color palette, this vector needs to have the names be the cell types or cluster names}
+
+\item{group.by}{Cluster variable used in slingshot}
 }
 \description{
 Plot heatmap of the pseudotime data

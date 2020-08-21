@@ -1,8 +1,8 @@
 Package: scExtras
 Type: Package
 Title: Single cell data analysis helper functions
-Version: 0.3
-Date: 2019-06-13
+Version: 0.4
+Date: 2020-08-21
 Author: Michael Morley
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: Functions to run Seurat version 0.3, slingshot, monocle and other scRNA packages on single cell data

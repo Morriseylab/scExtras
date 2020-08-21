@@ -24,6 +24,8 @@ LineageFeaturePlot(
 \item{dims}{Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions}
 
 \item{cols}{Color palette}
+
+\item{group.by}{Cluster variable used in slingshot}
 }
 \description{
 CurvePlot Plot Slingshot Curves

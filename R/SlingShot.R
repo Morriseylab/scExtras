@@ -61,6 +61,7 @@ runPseudoTimeDGE <- function(object){
 #' @param sds Slingshot Data object
 #' @param group.by variable to group by
 #' @param reduction Which dimensionality reduction to use, default UMAP
+#' @param lineage Linage to plot or all to plot all lineages
 #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
 #' @param cols Color palette
 #' @param label Label plots
@@ -68,24 +69,34 @@ runPseudoTimeDGE <- function(object){
 #' @export
 #'
 CurvePlot = function(object,
-                          sds=NULL,
-                          group.by = NULL,
-                          reduction = 'umap',
-                          dims = 1:2,
-                          cols=NULL,
-                          label=T
-                          ) {
+                     sds = NULL,
+                     group.by = NULL,
+                     reduction = 'umap',
+                     lineage='all',
+                     dims = 1:2,
+                     cols = NULL,
+                     label = T) {
+
   object[['ident']] <- Idents(object = object)
   group.by <- group.by %||% 'ident'
   dims <- paste0(Key(object = object[[reduction]]), dims)
 
-  curved <-
-    bind_rows(lapply(names(slingCurves(sds)), function(x) {
-      c <- slingCurves(sds)[[x]]
-      d <- as.data.frame(c$s[c$ord, dims])
-      d$curve <- x
-      return(d)
-    }))
+  if (lineage == 'all') {
+    curved <-
+      bind_rows(lapply(names(slingCurves(sds)), function(x) {
+        c <- slingCurves(sds)[[x]]
+        d <- as.data.frame(c$s[c$ord, dims])
+        d$curve <- x
+        return(d)
+      }))
+
+  } else{
+    curve <- gsub('lineage','curve',lineage)
+    c <- slingCurves(sds)[[curve]]
+    curved <- as.data.frame(c$s[c$ord, dims])
+    curved$curve <- lineage
+  }
+
 
 
   DimPlot(object,cols=cols,label = label,group.by = group.by,reduction = reduction) +

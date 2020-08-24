@@ -9,6 +9,7 @@ CurvePlot(
   sds = NULL,
   group.by = NULL,
   reduction = "umap",
+  lineage = "all",
   dims = 1:2,
   cols = NULL,
   label = T
@@ -22,6 +23,8 @@ CurvePlot(
 \item{group.by}{variable to group by}
 
 \item{reduction}{Which dimensionality reduction to use, default UMAP}
+
+\item{lineage}{Linage to plot or all to plot all lineages}
 
 \item{dims}{Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions}
 

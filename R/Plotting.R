@@ -111,6 +111,7 @@ BiGenePlot <-
     p <- ggplot(data, aes_string(x = dims[1], y = dims[2])) +
       geom_point(aes(color = value)) +
       scale_color_manual(values = cols,drop = F) +
+      theme_void() + coord_equal() +
       theme(
         plot.title = element_text(hjust = 0.5),
         legend.position = "bottom",

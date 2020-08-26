@@ -54,8 +54,9 @@ DimPCAPlot <- function(object,dims=1:10,feature){
 #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
 #' @param reduction Which dimensionality reduction to use
 #' @param pt.size Adjust point size
-#' @param curve
-#' @param title Plot Tttle
+#' @param cols Vector of colors for Feature1+/Feature2+, feature1+,feature2+ and feature1-/feature2-
+#' @param plotLineage
+#' @param title Plot Title
 #' @export
 
 BiGenePlot <-
@@ -67,11 +68,19 @@ BiGenePlot <-
            dims = 1:2,
            reduction = "umap",
            pt.size = 0.1,
-           curve = NULL,
+           cols = c("#E41A1C", "#377EB8", "#4DAF4A", 'grey75'),
+           plotLineage = FALSE,
            title = NULL
   )
   {
     ###
+
+    if(length(cols)!=4){
+      stop("Please input a vector of 4 colors in the following oerder: Feature1+/Feature2+, feature1+,feature2+ and feature1-/feature2-")
+    }
+
+
+
     feature1.name <- paste0(feature1, '+')
     feature2.name <- paste0(feature2, '+')
     feature.both.name <- paste0(feature1, '+/', feature2, '+')
@@ -101,8 +110,7 @@ BiGenePlot <-
 
     p <- ggplot(data, aes_string(x = dims[1], y = dims[2])) +
       geom_point(aes(color = value)) +
-      scale_color_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", 'grey75'),
-                         drop = F) +
+      scale_color_manual(values = cols,drop = F) +
       theme(
         plot.title = element_text(hjust = 0.5),
         legend.position = "bottom",
@@ -112,7 +120,7 @@ BiGenePlot <-
         panel.grid.minor = element_blank()
       )
 
-    if(!is.null(curve)){
+    if(plotLineage){
       curved <-
         bind_rows(lapply(names(object@misc$sds$data@curves), function(x) {
           c <- slingCurves(object@misc$sds$data)[[x]]

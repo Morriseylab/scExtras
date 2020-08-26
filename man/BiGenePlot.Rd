@@ -13,7 +13,8 @@ BiGenePlot(
   dims = 1:2,
   reduction = "umap",
   pt.size = 0.1,
-  curve = NULL,
+  cols = c("#E41A1C", "#377EB8", "#4DAF4A", "grey75"),
+  plotLineage = FALSE,
   title = NULL
 )
 }
@@ -34,7 +35,9 @@ BiGenePlot(
 
 \item{pt.size}{Adjust point size}
 
-\item{title}{Plot Tttle}
+\item{cols}{Vector of colors for Feature1+/Feature2+, feature1+,feature2+ and feature1-/feature2-}
+
+\item{title}{Plot Title}
 }
 \description{
 bi_getValues utility function.

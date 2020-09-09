@@ -38,7 +38,7 @@ runSlingshot  <- function(object,sds.name='sds',reduction='dm',group.by=NULL, st
 #' @export
 #'
 runPseudoTimeDGE <- function(object){
-  var <- VariableFeatures(scrna)
+  var <- VariableFeatures(object)
 
   DGE <- list()
   for(c in names(object@misc$sds$data@curves)){
@@ -244,7 +244,7 @@ plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col, g
 #'
 plotCurveDGEgenes <- function(object=NULL,curve=NULL,n=25,reduction='dm'){
   genes = object@misc$sds$dge[[curve]] %>% arrange(p.value) %>% head(n) %>% pull(gene)
-  plot_grid(  plotlist = FeaturePlot(scrna,genes,reduction = reduction,cols = c('grey','purple')))
+  plot_grid(  plotlist = FeaturePlot(object,genes,reduction = reduction,cols = c('grey','purple')))
 
 }
 

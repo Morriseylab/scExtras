@@ -1,10 +1,10 @@
 # scExtras
 
 
-Provides addiiontal functions for Seurat v3  
+Provides additional functions for Seurat v3  
 
 
 * Diffusionmap
 * Slingshot
-* Ligand-Recptor Analysis
+* Ligand-Receptor Analysis
 

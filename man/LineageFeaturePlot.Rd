@@ -6,7 +6,6 @@
 \usage{
 LineageFeaturePlot(
   object,
-  sds,
   lineage = "lineage1",
   reduction = "umap",
   dims = 1:2,
@@ -17,8 +16,6 @@ LineageFeaturePlot(
 \arguments{
 \item{object}{Seurat object}
 
-\item{sds}{Slingshot Data object}
-
 \item{reduction}{Which dimensionality reduction to use, default UMAP}
 
 \item{dims}{Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions}
@@ -26,6 +23,8 @@ LineageFeaturePlot(
 \item{cols}{Color palette}
 
 \item{group.by}{Cluster variable used in slingshot}
+
+\item{sds}{Slingshot Data object}
 }
 \description{
 CurvePlot Plot Slingshot Curves

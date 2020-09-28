@@ -6,7 +6,6 @@
 \usage{
 runSlingshot(
   object,
-  sds.name = "sds",
   reduction = "dm",
   group.by = NULL,
   start.clus = NULL,
@@ -19,8 +18,6 @@ runSlingshot(
 }
 \arguments{
 \item{object}{Seurat object}
-
-\item{sds.name}{Name in hte Misc slot to save the Slingshot object}
 
 \item{reduction}{Reduction method. Default is 'dm'}
 

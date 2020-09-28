@@ -1,6 +1,5 @@
 #'run Slingshot
 #' @param object Seurat object
-#' @param sds.name Name in hte Misc slot to save the Slingshot object
 #' @param group,by groups
 #' @param reduction Reduction method. Default is 'dm'
 #' @param start.clus start cluster
@@ -12,9 +11,9 @@
 #' @import dplyr tidyr Seurat slingshot
 #' @export
 #'
-runSlingshot  <- function(object,sds.name='sds',reduction='dm',group.by=NULL, start.clus=NULL,end.clus=NULL, approx_points = FALSE, allow.breaks=TRUE, extend='n',stretch=0){
+runSlingshot  <- function(object,reduction='dm',group.by=NULL, start.clus=NULL,end.clus=NULL, approx_points = FALSE, allow.breaks=TRUE, extend='n',stretch=0){
   rd <- Embeddings(object,reduction)
-
+  sds.name='sds'
   #Set ident to groupby option
   if(!is.null(group.by)){
       Idents(object)<- group.by
@@ -56,9 +55,8 @@ runPseudoTimeDGE <- function(object){
 
 }
 
-#'CurvePlot Plot Slingshot Curves
+#'CurvePlot Deprecated, Please use lineageDimPlot
 #' @param object Seurat object
-#' @param sds Slingshot Data object
 #' @param group.by variable to group by
 #' @param reduction Which dimensionality reduction to use, default UMAP
 #' @param lineage Linage to plot or all to plot all lineages
@@ -69,14 +67,38 @@ runPseudoTimeDGE <- function(object){
 #' @export
 #'
 CurvePlot = function(object,
-                     sds = NULL,
+                              sds = NULL,
+                               group.by = NULL,
+                               reduction = 'umap',
+                               lineage='all',
+                               dims = 1:2,
+                               cols = NULL,
+                               label = T) {
+
+return("Please use lineageDimPlot")
+}
+
+
+
+#'lineageDimPlot Plot Slingshot Curves
+#' @param object Seurat object
+#' @param group.by variable to group by
+#' @param lineage Linage to plot or all to plot all lineages
+#' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
+#' @param cols Color palette
+#' @param label Label plots
+#' @import dplyr tidyr Seurat ggplot2
+#' @export
+#'
+lineageDimPlot = function(object,
                      group.by = NULL,
-                     reduction = 'umap',
                      lineage='all',
                      dims = 1:2,
                      cols = NULL,
                      label = T) {
 
+  sds <- object@misc$sds$data
+  reduction=sub@misc$sds$dr
   object[['ident']] <- Idents(object = object)
   group.by <- group.by %||% 'ident'
   dims <- paste0(Key(object = object[[reduction]]), dims)
@@ -113,13 +135,18 @@ CurvePlot = function(object,
 #' @import dplyr tidyr Seurat ggplot2
 #' @export
 #'
-LineageFeaturePlot <- function(object,sds,lineage='lineage1', reduction='umap',dims=1:2,cols='RdYlBu', group.by=NULL){
+LineageFeaturePlot <- function(object,lineage='lineage1', reduction='umap',dims=1:2,cols='RdYlBu', group.by=NULL){
     qlineage <- quo(lineage)
     group.by<- sym(group.by)
     #group.by <- group.by %||% 'ident'
     if (is.null(x = group.by)) {
       stop("Please Enter the variable that was used to define groups in Slingshot, ie var_celltype, var_cluster etc.")
     }
+    sds <- object@misc$sds$data
+    if (is.null(x = sds)) {
+      stop("Slignshot has not be run")
+    }
+
 
 
     curve <- gsub('lineage','curve',lineage)
@@ -171,14 +198,19 @@ LineageFeaturePlot <- function(object,sds,lineage='lineage1', reduction='umap',d
 #' @import dplyr Seurat
 #' @export
 #'
-plotLineageHeatMap <- function(object,sdsname,features,lineage='lineage1',col, group.by=NULL){
+plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=NULL){
   if (is.null(x = group.by)) {
     stop("Please Enter the variable that was used to define groups in Slingshot, ie var_celltype, var_cluster etc.")
   }
+  #need rename or remove an meta.data variable time
+  if('time' %in% colnames(object@meta.data)){
+    object@meta.data <- object@meta.data %>% rename(vartime='time')
+  }
+  sds <- object@misc$sds$data
+  if (is.null(x = sds)) {
+    stop("Slignshot has not be run")
+  }
 
-  ## Maybe add curve is user puts in integer
-
-  sds <- object@misc[[sdsname]]$data
   clusterinlineage <- slingLineages(sds)[[stringr::str_to_title(lineage)]]
   ### Should add a check for lineages in model
   group.by <- sym(group.by)

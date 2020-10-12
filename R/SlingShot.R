@@ -78,10 +78,35 @@ CurvePlot = function(object,
 return("Please use lineageDimPlot")
 }
 
+#'getSDS Plot Slingshot Curves
+#' @param object Seurat object
+#' @return Returns an object of class SlingshotDataSet
+#' @export
+getSDS = function(object){
+  sds <- object@misc$sds$data
+  if(is.null(sds)){
+    stop("SDS slot is empty")
+  }
+  }
+
+#'setSDS Plot Slingshot Curves
+#' @param object Seurat object
+#' @param sds A SlingshotDataSet object
+#' @return Returns an object of class Seurat with SDS set into the misc slot.
+#' @export
+setSDS = function(object,sds){
+  if(is(sds,'SlingshotDataSet')== TRUE){
+      object@misc$sds$data <- sds
+  }else{
+    stop("Please enter SlingshotDataSet object")
+  }
+
+}
 
 
 #'lineageDimPlot Plot Slingshot Curves
 #' @param object Seurat object
+#' @param reduction Reduction used
 #' @param group.by variable to group by
 #' @param lineage Linage to plot or all to plot all lineages
 #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
@@ -91,14 +116,16 @@ return("Please use lineageDimPlot")
 #' @export
 #'
 lineageDimPlot = function(object,
-                     group.by = NULL,
-                     lineage='all',
-                     dims = 1:2,
-                     cols = NULL,
-                     label = T) {
+                          reduction = 'umap',
+                          group.by = NULL,
+                          lineage='all',
+                          dims = 1:2,
+                          cols = NULL,
+                          label = T) {
 
-  sds <- object@misc$sds$data
-  reduction=sub@misc$sds$dr
+  sds <- getSDS(object)
+
+  #reduction=sub@misc$sds$dr
   object[['ident']] <- Idents(object = object)
   group.by <- group.by %||% 'ident'
   dims <- paste0(Key(object = object[[reduction]]), dims)
@@ -125,9 +152,8 @@ lineageDimPlot = function(object,
     geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1)
 }
 
-#'CurvePlot Plot Slingshot Curves
+#'LineageFeaturePlot Plot Slingshot Curves
 #' @param object Seurat object
-#' @param sds Slingshot Data object
 #' @param reduction Which dimensionality reduction to use, default UMAP
 #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
 #' @param cols Color palette
@@ -142,7 +168,7 @@ LineageFeaturePlot <- function(object,lineage='lineage1', reduction='umap',dims=
     if (is.null(x = group.by)) {
       stop("Please Enter the variable that was used to define groups in Slingshot, ie var_celltype, var_cluster etc.")
     }
-    sds <- object@misc$sds$data
+    sds <- getSDS(object)
     if (is.null(x = sds)) {
       stop("Slignshot has not be run")
     }
@@ -206,7 +232,8 @@ plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=
   if('time' %in% colnames(object@meta.data)){
     object@meta.data <- object@meta.data %>% rename(vartime='time')
   }
-  sds <- object@misc$sds$data
+
+  sds <- getSDS(object)
   if (is.null(x = sds)) {
     stop("Slignshot has not be run")
   }

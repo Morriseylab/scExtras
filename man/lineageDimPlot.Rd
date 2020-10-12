@@ -6,6 +6,7 @@
 \usage{
 lineageDimPlot(
   object,
+  reduction = "umap",
   group.by = NULL,
   lineage = "all",
   dims = 1:2,
@@ -15,6 +16,8 @@ lineageDimPlot(
 }
 \arguments{
 \item{object}{Seurat object}
+
+\item{reduction}{Reduction used}
 
 \item{group.by}{variable to group by}
 

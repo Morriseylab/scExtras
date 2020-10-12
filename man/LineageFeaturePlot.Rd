@@ -2,7 +2,7 @@
 % Please edit documentation in R/SlingShot.R
 \name{LineageFeaturePlot}
 \alias{LineageFeaturePlot}
-\title{CurvePlot Plot Slingshot Curves}
+\title{LineageFeaturePlot Plot Slingshot Curves}
 \usage{
 LineageFeaturePlot(
   object,
@@ -23,9 +23,7 @@ LineageFeaturePlot(
 \item{cols}{Color palette}
 
 \item{group.by}{Cluster variable used in slingshot}
-
-\item{sds}{Slingshot Data object}
 }
 \description{
-CurvePlot Plot Slingshot Curves
+LineageFeaturePlot Plot Slingshot Curves
 }

@@ -102,7 +102,6 @@ setSDS = function(object,sds){
     stop("Please enter SlingshotDataSet object")
   }
   return(object)
-
 }
 
 

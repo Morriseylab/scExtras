@@ -1,7 +1,7 @@
 #'Create ligand receptor heatmap plot
 #' @param result dataframe containing the fields- interacting_pair,Receptor,Ligand,Receptor_cluster,Ligand_cluster
 #' @param clusterby clusterby option for heatmap. Choose from "both", "row","column" and "none"
-#' @import dplyr tidyr RColorBrewer NMF
+#' @import dplyr tidyr RColorBrewer NMF tibble
 #' @export
 #' @return Returns heatmap with ligand-receptor pair data
 

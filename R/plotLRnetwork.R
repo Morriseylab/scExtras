@@ -2,7 +2,7 @@
 #' @param results dataframe containing the fields- interacting_pair,Receptor,Ligand,Receptor_cluster,Ligand_cluster
 #' @param filtermin minimum number of interactions between the nodes
 #' @param filtermax maximum number of interactions between the nodes
-#' @import dplyr tidyr igraph
+#' @import dplyr tidyr igraph tibble
 #' @export
 #' @return Returns network plot with ligand-receptor pair data
 

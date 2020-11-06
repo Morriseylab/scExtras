@@ -4,7 +4,7 @@
 \alias{processExper}
 \title{Preprocess single cell RNA-seq data with seurat and return seurat object}
 \usage{
-processExper(object, ccscale = F, sc.transform = F)
+processExper(object, ccscale = F, sc.transform = F, return_var_genes = F)
 }
 \arguments{
 \item{object}{Seurat object}
@@ -12,6 +12,8 @@ processExper(object, ccscale = F, sc.transform = F)
 \item{ccscale}{Specify whether to scale for cell cycle genes or not}
 
 \item{sc.transform}{Define whether or not to apply scTransform function in seurat. T/F}
+
+\item{return_var_genes}{Define if scale.data matrix should contain only the variable genes. T/F}
 }
 \value{
 Seurat object

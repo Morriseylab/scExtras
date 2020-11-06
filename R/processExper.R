@@ -8,7 +8,7 @@
 #' @examples
 #' scrna = processExper(object=scrna,ccscale=F,sc.transform =F)
 
-processExper <- function(object,ccscale=F,sc.transform=F){
+processExper <- function(object,ccscale=F,sc.transform=F,return_var_genes = F){
 
   if(sc.transform==T){
 
@@ -29,9 +29,9 @@ processExper <- function(object,ccscale=F,sc.transform=F){
         cc.genes$g2m.genes <- m2h %>% filter(human_name %in% cc.genes$g2m.genes) %>% pull(mouse_name)
         object <- CellCycleScoring(object = object, s.features  = cc.genes$s.genes, g2m.features = cc.genes$g2m.genes)
       }
-      object <- SCTransform(object, verbose = FALSE, vars.to.regress=c("nCount_RNA","percent.mito","S.Score", "G2M.Score"))
+      object <- SCTransform(object, verbose = FALSE, vars.to.regress=c("nCount_RNA","percent.mito","S.Score", "G2M.Score"),return.only.var.genes = return_var_genes)
     }else{
-      object <- SCTransform(object, vars.to.regress = c("nCount_RNA","percent.mito"), verbose = FALSE)
+      object <- SCTransform(object, vars.to.regress = c("nCount_RNA","percent.mito"),return.only.var.genes = return_var_genes, verbose = FALSE)
     }
   }else{
     #normalize data

@@ -75,7 +75,7 @@ CurvePlot = function(object,
                                cols = NULL,
                                label = T) {
 
-return("Please use lineageDimPlot")
+stop("Please use lineageDimPlot")
 }
 
 #'getSDS Plot Slingshot Curves

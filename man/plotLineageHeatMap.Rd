@@ -9,7 +9,10 @@ plotLineageHeatMap(
   features,
   lineage = "lineage1",
   col,
-  group.by = NULL
+  group.by = NULL,
+  features.callout = NULL,
+  show_row_names = TRUE,
+  show_heatmap_legend = TRUE
 )
 }
 \arguments{
@@ -23,7 +26,11 @@ plotLineageHeatMap(
 
 \item{group.by}{Cluster variable used in slingshot}
 
-\item{sdsname}{Name of Slingshot object stored in Seurat Object}
+\item{features.callout}{vector of gene names to be called out}
+
+\item{show_row_names}{T/F to show row names}
+
+\item{show_heatmap_legend}{T/F show legend}
 }
 \description{
 Plot heatmap of the pseudotime data

@@ -214,18 +214,19 @@ LineageFeaturePlot <- function(object,lineage='lineage1', reduction='umap',dims=
   }
 
 
-
 #'Plot heatmap of the pseudotime data
 #' @param object Seurat object
-#' @param sdsname Name of Slingshot object stored in Seurat Object
 #' @param features Vector of genes to be plotted
 #' @param lineage THe linage to be plotted such as lineage1
 #' @param col Color palette, this vector needs to have the names be the cell types or cluster names
 #' @param group.by Cluster variable used in slingshot
-#' @import dplyr Seurat
+#' @param features.callout vector of gene names to be called out
+#' @param show_row_names T/F to show row names
+#' @param show_heatmap_legend T/F show legend
+#' @import dplyr Seurat complexHeatmap
 #' @export
 #'
-plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=NULL){
+plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=NULL,features.callout=NULL, show_row_names=TRUE,show_heatmap_legend=TRUE){
   if (is.null(x = group.by)) {
     stop("Please Enter the variable that was used to define groups in Slingshot, ie var_celltype, var_cluster etc.")
   }
@@ -262,49 +263,41 @@ plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=
     filter(!!group.by %in% clusterinlineage) %>%
     mutate(group_by=factor(group.by,levels=clusterinlineage))
 
-  data <- FetchData(object=object, vars=features,cells=cells$cellid) %>% t(.)
-  mat_scaled = t(scale(t(data)))
+  data <- FetchData(object=object, vars=features,cells=cells$cellid) %>% scale %>% t(.)
 
   f1=circlize::colorRamp2(c(-2,0,2), c('skyblue1', "grey10","yellow"))
-
-
-  col_fun =circlize::colorRamp2(c(0, 20), c("blue", "red"))
+  col_fun =circlize::colorRamp2(range(cells$time), c('#0B1BE9','#F19F04'))
 
   ha = HeatmapAnnotation(
     #pseudotime=anno_lines(cells$time),
-    pseudotime=anno_barplot(cells$time, gp = gpar(col = "#296EFA"),border = F,bar_width = 1),
+    #   pseudotime=anno_barplot(cells$time, gp = gpar(col = "#296EFA"),border = F,bar_width = 1),
+    pseudotime = cells$time,
     celltype = cells %>% pull(group.by),
-    col = list(celltype = col
+    col = list(celltype = col,
+               pseudotime=col_fun
     ))
 
+
+  if(!is.null(features.callout)){
+    gindex <- which(features %in% features.callout)
+    ra = rowAnnotation(gene = anno_mark(at = gindex, labels = features[gindex]))
+  }
+
+
+
   ht <- Heatmap(mat_scaled,
-                 col=f1,
-                 show_row_dend = F,
-                 row_names_side='left',
-                 show_column_names = F,
-                 cluster_columns = F,
-                 cluster_rows = F,
-                 top_annotation = ha
+                col=f1,
+                show_row_names= show_row_names,
+                show_row_dend = F,
+                row_names_side='left',
+                show_column_names = F,
+                cluster_columns = F,
+                cluster_rows = F,
+                right_annotation = ra,
+                top_annotation = ha
   )
   return(ht)
 
 
 
 }
-
-
-
-#'Create feature plots of genes
-#' @param object Seurat object
-#' @param curve curve to be plotted
-#' @param reduction Reduction method. Default is 'dm'
-#' @param n number of genes to plot. Default is 25
-#' @import dplyr tidyr Seurat
-#' @export
-#'
-plotCurveDGEgenes <- function(object=NULL,curve=NULL,n=25,reduction='dm'){
-  genes = object@misc$sds$dge[[curve]] %>% arrange(p.value) %>% head(n) %>% pull(gene)
-  plot_grid(  plotlist = FeaturePlot(object,genes,reduction = reduction,cols = c('grey','purple')))
-
-}
-

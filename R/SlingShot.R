@@ -223,7 +223,7 @@ LineageFeaturePlot <- function(object,lineage='lineage1', reduction='umap',dims=
 #' @param features.callout vector of gene names to be called out
 #' @param show_row_names T/F to show row names
 #' @param show_heatmap_legend T/F show legend
-#' @import dplyr Seurat complexHeatmap
+#' @import dplyr Seurat ComplexHeatmap
 #' @export
 #'
 plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=NULL,features.callout=NULL, show_row_names=TRUE,show_heatmap_legend=TRUE){

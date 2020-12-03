@@ -285,7 +285,7 @@ plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=
 
 
 
-  ht <- Heatmap(mat_scaled,
+  ht <- Heatmap(data,
                 col=f1,
                 show_row_names= show_row_names,
                 show_row_dend = F,

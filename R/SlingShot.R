@@ -297,7 +297,78 @@ plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=
                 top_annotation = ha
   )
   return(ht)
+}
 
 
+#'Plot heatmap of the pseudotime data
+#' @param object Seurat object
+#' @param features Vector of genes to be plotted
+#' @param lineage THe linage to be plotted such as lineage1
+#' @param col Color palette, this vector needs to have the names be the cell types or cluster names
+#' @param lo.col Low value color
+#' @param hi.col high value color
+#' @param group.by Cluster variable used in slingshot
+#' @import dplyr Seurat
+#' @export
+#'
+plotLineangeGene <- function(object,features,lineage='lineage1',col,lo.col='red',hi.col='green',group.by=NULL){
+  if (is.null(x = group.by)) {
+    stop("Please Enter the variable that was used to define groups in Slingshot, ie var_celltype, var_cluster etc.")
+  }
+  #need rename or remove an meta.data variable time
+  if('time' %in% colnames(object@meta.data)){
+    object@meta.data <- object@meta.data %>% rename(vartime='time')
+  }
+
+  sds <- getSDS(object)
+  if (is.null(x = sds)) {
+    stop("Slignshot has not be run")
+  }
+
+  clusterinlineage <- slingLineages(sds)[[stringr::str_to_title(lineage)]]
+  ### Should add a check for lineages in model
+  group.by <- sym(group.by)
+  qlineage <- quo(lineage)
+
+  cells <- inner_join(
+    slingCurveWeights(sds,as.probs=T) %>% as.data.frame() %>%
+      setNames(gsub('curve','lineage',names(.))) %>%
+      rownames_to_column('cellid') %>%
+      gather(curve,w,-cellid) %>%
+      group_by(cellid) %>%
+      top_n(n=1,wt=w) %>%
+      filter(curve==!!lineage),
+    slingPseudotime(sds) %>% as.data.frame %>%
+      setNames(gsub('curve','lineage',names(.))) %>%
+      rownames_to_column('cellid') %>%
+      dplyr::select(cellid,!!qlineage) %>%
+      dplyr::rename('time'=lineage)
+  ) %>% arrange(time) %>%
+    inner_join(., object@meta.data %>% rownames_to_column('cellid')) %>%
+    filter(!!group.by %in% clusterinlineage) %>%
+    mutate(group_by=factor(group.by,levels=clusterinlineage)) %>%
+    dplyr::select(cellid,time,!!group.by)
+
+  data <- inner_join(cells,FetchData(object=object,
+                                     vars=features,cells=cells$cellid) %>% rownames_to_column('cellid')) %>%
+    pivot_longer(cols=c(-cellid,-time,-!!group.by),names_to = 'gene',values_to = 'expression')
+
+
+  ggplot(data,aes(x=time,y=expression)) +
+    geom_point(aes(color=time),size=.2)  +
+    geom_smooth(se=F,color='gray40') +
+    scale_color_gradient(low=lo.col,high=hi.col) +
+    theme_bw() + xlab('Pseudotime') + ggtitle(features) +
+    theme(legend.position = 'blank',
+          axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank(),
+          axis.title.y=element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank()
+    )
 
 }
+
+
+

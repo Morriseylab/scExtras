@@ -269,10 +269,9 @@ plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=
   col_fun =circlize::colorRamp2(range(cells$time), c('#0B1BE9','#F19F04'))
 
   ha = HeatmapAnnotation(
-    #pseudotime=anno_lines(cells$time),
-    #   pseudotime=anno_barplot(cells$time, gp = gpar(col = "#296EFA"),border = F,bar_width = 1),
-    pseudotime = cells$time,
     celltype = cells %>% pull(group.by),
+    pseudotime = cells$time,
+    simple_anno_size = unit(1, "cm"),
     col = list(celltype = col,
                pseudotime=col_fun
     ))

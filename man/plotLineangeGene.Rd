@@ -21,8 +21,6 @@ plotLineangeGene(
 
 \item{lineage}{THe linage to be plotted such as lineage1}
 
-\item{col}{Color palette, this vector needs to have the names be the cell types or cluster names}
-
 \item{lo.col}{Low value color}
 
 \item{hi.col}{high value color}

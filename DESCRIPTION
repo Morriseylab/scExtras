@@ -1,7 +1,7 @@
 Package: scExtras
 Type: Package
 Title: Single cell data analysis helper functions
-Version: 0.5
+Version: 0.6
 Date: 2020-10-12
 Author: Michael Morley
 Maintainer: Who to complain to <yourfault@somewhere.net>

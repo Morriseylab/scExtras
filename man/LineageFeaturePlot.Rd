@@ -9,7 +9,8 @@ LineageFeaturePlot(
   lineage = "lineage1",
   reduction = "umap",
   dims = 1:2,
-  cols = "RdYlBu",
+  lo.col = "#0B1BE9",
+  hi.col = "#F19F04",
   group.by = NULL
 )
 }
@@ -20,7 +21,9 @@ LineageFeaturePlot(
 
 \item{dims}{Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions}
 
-\item{cols}{Color palette}
+\item{lo.col}{Low value color}
+
+\item{hi.col}{high value color}
 
 \item{group.by}{Cluster variable used in slingshot}
 }

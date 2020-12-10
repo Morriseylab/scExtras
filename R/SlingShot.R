@@ -157,12 +157,13 @@ lineageDimPlot = function(object,
 #' @param object Seurat object
 #' @param reduction Which dimensionality reduction to use, default UMAP
 #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions
-#' @param cols Color palette
+#' @param lo.col Low value color
+#' @param hi.col high value color
 #' @param group.by Cluster variable used in slingshot
 #' @import dplyr tidyr Seurat ggplot2
 #' @export
 #'
-LineageFeaturePlot <- function(object,lineage='lineage1', reduction='umap',dims=1:2,cols='RdYlBu', group.by=NULL){
+LineageFeaturePlot <- function(object,lineage='lineage1', reduction='umap',dims=1:2,lo.col='#0B1BE9',hi.col='#F19F04', group.by=NULL){
     qlineage <- quo(lineage)
     group.by<- sym(group.by)
     #group.by <- group.by %||% 'ident'
@@ -206,7 +207,7 @@ LineageFeaturePlot <- function(object,lineage='lineage1', reduction='umap',dims=
 
 
     FeaturePlot(object,features = 'pseudotime',order = T) +
-      scale_color_distiller(palette = cols,  na.value = 'grey90') +
+      scale_color_gradient(low=lo.col,high=hi.col) +
       geom_path(aes_string(dims[1], dims[2], linetype = "curve"), curved, size =1) +
       ggtitle(lineage) +
       coord_equal() + ggplot2::theme_void()
@@ -303,7 +304,6 @@ plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=
 #' @param object Seurat object
 #' @param features Vector of genes to be plotted
 #' @param lineage THe linage to be plotted such as lineage1
-#' @param col Color palette, this vector needs to have the names be the cell types or cluster names
 #' @param lo.col Low value color
 #' @param hi.col high value color
 #' @param group.by Cluster variable used in slingshot

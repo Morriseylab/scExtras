@@ -281,6 +281,9 @@ plotLineageHeatMap <- function(object,features,lineage='lineage1',col, group.by=
   if(!is.null(features.callout)){
     gindex <- which(features %in% features.callout)
     ra = rowAnnotation(gene = anno_mark(at = gindex, labels = features[gindex]))
+  }else{
+    ra= NULL
+
   }
 
 

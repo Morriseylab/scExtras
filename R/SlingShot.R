@@ -359,7 +359,7 @@ plotLineangeGene <- function(object,features,lineage='lineage1',col,lo.col='red'
   ggplot(data,aes(x=time,y=expression)) +
     geom_point(aes(color=time),size=.2)  +
     geom_smooth(se=F,color='gray40') +
-    scale_color_gradient(low=lo.col,high=hi.col,na.color='gray80') +
+    scale_color_gradient(low=lo.col,high=hi.col,na.value='gray80') +
     theme_bw() + xlab('Pseudotime') + ggtitle(features) +
     theme(legend.position = 'blank',
           axis.title.x=element_blank(),

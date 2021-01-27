@@ -53,6 +53,9 @@ scrna <- ClusterDR(scrna,dims=1:npcs,n.neighbors =k)
 
 ## Diffusion Map
 Seruat v3 removed the Diffusionmap dimension reduction routine. 
+```
+scrna <- RunDiffusion(scrna, dims=1:20)
+```
 
 ## Trajectory Analysis using slingshot
 

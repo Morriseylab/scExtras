@@ -28,6 +28,7 @@ Read in 10x files, this can be H5 files or directories containg the mtx, barcode
 ```
 input10x <- c('Rep1.H5','Rep2.H5')
 outdir<-'Seurat'
+qcdir <- paste0(outdir,'/QC')
 org<-'human'
 projectname<- 'HumanLung1'
 
@@ -39,7 +40,7 @@ scrna = processExper(scrna ,ccscale = T, sc.transform = T)
 ```
 Perform PCA and save plots in QC dir. 
 ```
-scrna= PCATools(scrna, npcs=30, jackstraw=F, plotdir = 'QC')
+scrna= PCATools(scrna, npcs=30, jackstraw=F, plotdir = qcdir)
 ```
 Perform Louvain Clustering and UMAP redcution 
 ```

@@ -16,7 +16,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("kstreet13/slingshot")
 BiocManager::install("destiny")
-
+BiocManager::install("scds")
 ```
 
 ## Install 

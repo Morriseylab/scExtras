@@ -27,7 +27,7 @@ devtools::install_github('Morriseylab/scExtras')
 
 ## Run Pipeline 
 
-Read in 10x files, this can be H5 files or directories containg the mtx, barcode and gene files. 
+Read in 10x files, this can be H5 files or directories containg the mtx, barcode and gene files. Doublet detection is performed using [scds](https://www.bioconductor.org/packages/release/bioc/html/scds.html) and [DoubletFinder](https://github.com/chris-mcginnis-ucsf/DoubletFinder)
 
 ```
 input10x <- c('Rep1.H5','Rep2.H5')

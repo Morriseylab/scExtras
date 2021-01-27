@@ -12,7 +12,11 @@ Provides additional functions for Seurat v3
 ```
 devtools::install_github('chris-mcginnis-ucsf/DoubletFinder')
 
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 BiocManager::install("kstreet13/slingshot")
+BiocManager::install("destiny")
+
 ```
 
 ## Install 
@@ -47,8 +51,7 @@ Perform Louvain Clustering and UMAP redcution
 scrna <- ClusterDR(scrna,dims=1:npcs,n.neighbors =k)
 ```
 
-
-## Diffusionmap
+## Diffusion Map
 Seruat v3 removed the Diffusionmap dimension reduction routine. 
 
 ## Trajectory Analysis using slingshot

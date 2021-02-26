@@ -11,12 +11,15 @@ Provides additional functions for Seurat v3
 ## Requirements
 ```
 devtools::install_github('chris-mcginnis-ucsf/DoubletFinder')
+devtools::install_github("jokergoo/ComplexHeatmap")
+
+install.packages(c("NMF","data.table","broom","quantreg","gam","parallelDist"))
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("kstreet13/slingshot")
-BiocManager::install("destiny")
-BiocManager::install("scds")
+BiocManager::install(c("destiny","scds","Biobase"))
+
 ```
 
 ## Install 
@@ -58,11 +61,17 @@ scrna <- RunDiffusion(scrna, dims=1:20)
 ```
 
 ## Trajectory Analysis using slingshot
+ ```
+ scrna <- runSlingshot(mes,reduction='umap',approx_points = 200,extend= "n",stretch=0)
+ lineageDimPlot(scrna,reduction = "umap",group.by = "var_cluster",lineage = "all")
 
+```
 
 ## Basic Ligand-Receptor Analysis 
 
-
+```
+scrna <- RunLigRec(scrna,org=org)
+```
 
 
 

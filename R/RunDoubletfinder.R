@@ -6,7 +6,7 @@
 #' @param sct logical (T/F)
 #' @import DoubletFinder
 #' @export
-RunDoubletfinder <- function(object, dims,group="var_cluster",doublet.formrate =0.75, sct=T){
+RunDoubletfinder <- function(object, dims,group="var_cluster",doublet.formrate =0.075, sct=T){
 
   ### pK Identification (no ground-truth)
   sweep.res <- paramSweep_v3(object, PCs = dims, sct = sct)

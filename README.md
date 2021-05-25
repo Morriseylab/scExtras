@@ -64,6 +64,8 @@ scrna <- RunDiffusion(scrna, dims=1:20)
  ```
  scrna <- runSlingshot(mes,reduction='umap',approx_points = 200,extend= "n",stretch=0)
  lineageDimPlot(scrna,reduction = "umap",group.by = "var_cluster",lineage = "all")
+ 
+ 
 
 ```
 

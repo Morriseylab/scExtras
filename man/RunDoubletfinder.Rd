@@ -8,7 +8,7 @@ RunDoubletfinder(
   object,
   dims,
   group = "var_cluster",
-  doublet.formrate = 0.75,
+  doublet.formrate = 0.075,
   sct = T
 )
 }

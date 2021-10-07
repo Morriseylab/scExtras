@@ -33,6 +33,7 @@ RunLigRec <- function(object,group.by='ident',org,perc=30){
   perc=perc/100
   result=data.frame()
   res=data.frame()
+  my.data$clust= factor(my.data$clust, levels= unique(my.data$clust))
   #loop over each cluster to find pairs
   for(i in 1:(length(levels(my.data$clust)))){
     for(j in 1:(length(levels(my.data$clust)))){

@@ -12,8 +12,9 @@ Provides additional functions for Seurat v3
 ```
 devtools::install_github('chris-mcginnis-ucsf/DoubletFinder')
 devtools::install_github("jokergoo/ComplexHeatmap")
+devtools::install_github("Morriseylab/ligrec")
 
-install.packages(c("NMF","data.table","broom","quantreg","gam","parallelDist"))
+install.packages(c("Seurat","NMF","data.table","broom","quantreg","gam","parallelDist"))
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")

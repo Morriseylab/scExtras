@@ -1,4 +1,41 @@
 
+#'Plot a stacked bar graph of per Sample contribtion
+#' @param object Seurat object
+#' @param group.by Variable for x axis typicall cluster or celltype
+#' @param cols Color palette for grouping variable
+#' @export
+
+sampleBarGraph <- function(object,group.by=NULL,col=NULL){
+  if(is.null(group.by)){
+    print("group.by cannot be null")
+    exit()
+  }
+  if(is.null(object$sample)){
+    print("Cannot find Sample field in meta data")
+    exit()
+  }
+
+
+  p <- object@meta.data %>%
+    group_by(sample,!!sym(group.by)) %>%
+    summarise(n = n()) %>%
+    mutate(pct = n / sum(n))  %>%
+    ggplot(.,aes(x=!!sym(group.by),y=pct,fill=sample)) +
+    geom_bar(position="fill", stat="identity")  +
+    scale_y_continuous(labels = scales::percent_format()) +
+    scale_fill_manual(values=col) +
+    theme_bw() + theme(legend.position = 'bottom')
+
+  if(!is.null(col)){
+    p <- p + scale_fill_manual(values=col)
+  }
+  p
+
+
+}
+
+
+
 #'Plot Pairwise PCA plots.
 #' @param object Seurat object
 #' @param dims Compute N PC dims

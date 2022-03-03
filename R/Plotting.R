@@ -23,7 +23,6 @@ sampleBarGraph <- function(object,group.by=NULL,col=NULL){
     ggplot(.,aes(x=!!sym(group.by),y=pct,fill=sample)) +
     geom_bar(position="fill", stat="identity")  +
     scale_y_continuous(labels = scales::percent_format()) +
-    scale_fill_manual(values=col) +
     theme_bw() + theme(legend.position = 'bottom')
 
   if(!is.null(col)){

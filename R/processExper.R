@@ -10,9 +10,9 @@
 #' @examples
 #' scrna = processExper(object=scrna,ccscale=F,sc.transform =F)
 
-processExper <- function(object,ccscale=F,sc.transform=F,return_var_genes = F,org){
+processExper <- function(object,ccscale=F,sc.transform=T,return_var_genes = F,org){
   data('mouseortholog')
-  mouseorthologfile=mouse_human
+  m2h=mouse_human
   if(sc.transform==T){
 
     if(ccscale==T){
@@ -27,7 +27,7 @@ processExper <- function(object,ccscale=F,sc.transform=F,return_var_genes = F,or
         #Assign scores in the CellCycleScoring function.Stores S and G2/M scores in object@meta.data, along with the predicted classification of each cell in either G2M, S or G1 phase
         object <- CellCycleScoring(object = object, s.features = cc.genes$s.genes, g2m.features = cc.genes$g2m.genes)
       }else{
-        m2h <- readr::read_csv(mouseorthologfile)
+        #m2h <- readr::read_csv(mouseorthologfile)
         cc.genes$s.genes <- m2h %>% filter(human_name %in% cc.genes$s.genes) %>% pull(mouse_name)
         cc.genes$g2m.genes <- m2h %>% filter(human_name %in% cc.genes$g2m.genes) %>% pull(mouse_name)
         object <- CellCycleScoring(object = object, s.features  = cc.genes$s.genes, g2m.features = cc.genes$g2m.genes)
@@ -49,7 +49,7 @@ processExper <- function(object,ccscale=F,sc.transform=F,return_var_genes = F,or
       #Assign scores in the CellCycleScoring function.Stores S and G2/M scores in object@meta.data, along with the predicted classification of each cell in either G2M, S or G1 phase
       object <- CellCycleScoring(object = object, s.features = cc.genes$s.genes, g2m.features = cc.genes$g2m.genes)
     }else{
-      m2h <- readr::read_csv(mouseorthologfile)
+      #m2h <- readr::read_csv(mouseorthologfile)
       cc.genes$s.genes <- m2h %>% filter(human_name %in% cc.genes$s.genes) %>% pull(mouse_name)
       cc.genes$g2m.genes <- m2h %>% filter(human_name %in% cc.genes$g2m.genes) %>% pull(mouse_name)
       object <- CellCycleScoring(object = object, s.features  = cc.genes$s.genes, g2m.features = cc.genes$g2m.genes)

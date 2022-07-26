@@ -4,7 +4,7 @@
 \alias{processExper}
 \title{Preprocess single cell RNA-seq data with seurat and return seurat object}
 \usage{
-processExper(object, ccscale = F, sc.transform = F, return_var_genes = F, org)
+processExper(object, ccscale = F, sc.transform = T, return_var_genes = F, org)
 }
 \arguments{
 \item{object}{Seurat object}

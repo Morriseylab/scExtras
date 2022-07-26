@@ -3,14 +3,16 @@
 #' @param ccscale Specify whether to scale for cell cycle genes or not
 #' @param sc.transform Define whether or not to apply scTransform function in seurat. T/F
 #' @param return_var_genes Define if scale.data matrix should contain only the variable genes. T/F
+#' @param organism Organism (mouse/human)
 #' @return Seurat object
 #' @import dplyr tidyr Seurat
 #' @export
 #' @examples
 #' scrna = processExper(object=scrna,ccscale=F,sc.transform =F)
 
-processExper <- function(object,ccscale=F,sc.transform=F,return_var_genes = F){
-
+processExper <- function(object,ccscale=F,sc.transform=F,return_var_genes = F,org){
+  data('mouseortholog')
+  mouseorthologfile=mouse_human
   if(sc.transform==T){
 
     if(ccscale==T){

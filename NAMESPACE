@@ -2,6 +2,7 @@
 
 export(BiGenePlot)
 export(ClusterDR)
+export(CreateSeuratObj)
 export(CurvePlot)
 export(DimPCAPlot)
 export(DotPlotTopGenes)

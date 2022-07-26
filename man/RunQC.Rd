@@ -5,21 +5,20 @@
 \title{Perform QC on single cell RNA-seq data with seurat, store all stats and return seurat object}
 \usage{
 RunQC(
-  dir,
-  name,
+  object,
   org = "mouse",
-  files,
   filter = T,
   LowerFeatureCutoff = 200,
   UpperFeatureCutoff = "MAD",
   UpperMitoCutoff = 5,
-  doubletdetection = F
+  doubletdetection = T,
+  dir
 )
 }
 \arguments{
-\item{dir}{Directory containing the cellranger files for input}
+\item{object}{Seurat object}
 
-\item{org}{Organism}
+\item{org}{Organism (mouse/human)}
 
 \item{filter}{Specify whether to filter data}
 
@@ -29,11 +28,9 @@ RunQC(
 
 \item{doubletdetection}{Logical to specify if you want to run scds doublet detection}
 
-\item{ccscale}{Specify whether to scale for cell cycle genes or not}
+\item{dir}{Output directory for QC files}
 
 \item{UpperfeatureCutoff}{Upper bound, can be an integer or if set to MAD will be 3 median + 3*MAD}
-
-\item{sc.transform}{Define whether or not to apply scTransform function in seurat. T/F}
 }
 \value{
 Seurat object
@@ -42,5 +39,5 @@ Seurat object
 Perform QC on single cell RNA-seq data with seurat, store all stats and return seurat object
 }
 \examples{
-scrna = processExper(dir=prjdir,'test_prj',org='mouse',files=c("filtered_gene_bc_matrices/mm10"),ccscale=F,filter = T,LowerFeatureCutoff=200,UpperFeatureCutoff="MAD",UpperMitoCutoff=0.05)
+scrna = RunQC(object=scrna,org="mouse",filter = T,LowerFeatureCutoff=200,UpperFeatureCutoff="MAD",UpperMitoCutoff=0.05,doubletdetection = T)
 }

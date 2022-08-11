@@ -8,7 +8,7 @@
 #' @param distance Distance measurement method applied to data or a distance matrix/dist. For the allowed values, see find_knn. If this is a sparseMatrix, zeros are interpreted as "not a close neighbors", which allows the use of kNN-sparsified matrices (see the return value of find_knn.
 #' @param reduction.name Dimension Reduction method
 #' @param reduction.key Dimension Reduction key
-#' @import dplyr tidyr Seurat broom parallelDist destiny
+#' @import Seurat destiny
 #' @export
 RunDiffusion <- function(
   object,
@@ -30,21 +30,11 @@ RunDiffusion <- function(
     data.use <- t(x = GetAssayData(object = object, slot = 'data', assay = assay)[features, ])
   }
 
-  #data.dist <- parallelDist::parDist(data.use)
-  #data.diffusion <- data.frame(destiny::DiffusionMap(data = as.matrix(data.dist)+1,n_eigs = max.dim)@eigenvectors)
-
   data.diffusion <- data.frame(destiny::DiffusionMap(data.use,sigma=sigma,distance = distance,n_eigs = max.dim)@eigenvectors)
-
-
 
   colnames(x = data.diffusion) <- paste0(reduction.key, 1:ncol(x = data.diffusion))
   rownames(x = data.diffusion) <-  rownames(data.use)
-  # for (i in 1:max.dim) {
-  #    x <- data.diffusion[, i]
-  #   x <- MinMax(data = x, min = quantile(x = x, probs = q.use),
-  #              quantile(x = x, probs = 1 - q.use))
-  #  data.diffusion[, i] <- x
-  #}
+
 
   assay <- DefaultAssay(object = object[[reduction]])
 

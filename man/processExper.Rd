@@ -2,16 +2,14 @@
 % Please edit documentation in R/processExper.R
 \name{processExper}
 \alias{processExper}
-\title{Preprocess single cell RNA-seq data with seurat and return seurat object}
+\title{Preprocess single cell RNA-seq data with seurat and return seurat object. This function only does normalization, finding variable genes and scaling}
 \usage{
-processExper(object, ccscale = F, sc.transform = T, return_var_genes = F, org)
+processExper(object, ccscale = F, return_var_genes = F, org)
 }
 \arguments{
 \item{object}{Seurat object}
 
 \item{ccscale}{Specify whether to scale for cell cycle genes or not}
-
-\item{sc.transform}{Define whether or not to apply scTransform function in seurat. T/F}
 
 \item{return_var_genes}{Define if scale.data matrix should contain only the variable genes. T/F}
 
@@ -21,7 +19,7 @@ processExper(object, ccscale = F, sc.transform = T, return_var_genes = F, org)
 Seurat object
 }
 \description{
-Preprocess single cell RNA-seq data with seurat and return seurat object
+Preprocess single cell RNA-seq data with seurat and return seurat object. This function only does normalization, finding variable genes and scaling
 }
 \examples{
 scrna = processExper(object=scrna,ccscale=F,sc.transform =F)

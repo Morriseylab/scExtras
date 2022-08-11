@@ -2,17 +2,19 @@
 % Please edit documentation in R/Plotting.R
 \name{sampleBarGraph}
 \alias{sampleBarGraph}
-\title{Plot a stacked bar graph of per Sample contribtion}
+\title{Plot a stacked bar graph of}
 \usage{
-sampleBarGraph(object, group.by = NULL, col = NULL)
+sampleBarGraph(object, group.by = NULL, color.by = NULL, col = NULL)
 }
 \arguments{
 \item{object}{Seurat object}
 
-\item{group.by}{Variable for x axis typicall cluster or celltype}
+\item{group.by}{Variable for x axis typical cluster or celltype}
+
+\item{color.by}{Variable to split each group by such as library}
 
 \item{cols}{Color palette for grouping variable}
 }
 \description{
-Plot a stacked bar graph of per Sample contribtion
+Plot a stacked bar graph of
 }

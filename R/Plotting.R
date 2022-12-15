@@ -242,11 +242,11 @@ make3dPlot <- function(object,groupby,reduction='dm',colors=NULL){
 #' @param ncol How many columns to use for the plot
 #' @param cols Color palette
 #' @return patchwork object
-#' @import patchwaork
-#' @import tidyverse
+#' @import patchwork
+#' @import purr
+#' @import dplyr
 #' @export
-#' @example
-#' SplitMetaPlot(scrna,feature='sample')
+
 
 
 

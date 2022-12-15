@@ -29,9 +29,9 @@ RunQC <- function(object,
 
   if(doubletdetection ==T){
     sce= as.SingleCellExperiment(object)
-    sce = cxds(sce)
-    sce = bcds(sce)
-    sce = cxds_bcds_hybrid(sce)
+    sce = cxds(sce,estNdbl=T)
+    sce = bcds(sce,estNdbl=T)
+    sce = cxds_bcds_hybrid(sce,estNdbl=T)
     object=as.Seurat(sce)
   }
   if(org=='mouse'){

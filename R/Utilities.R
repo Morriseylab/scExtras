@@ -1,3 +1,17 @@
+named_group_split <- function(...) {
+  data <- group_by(...)
+
+  names <- group_keys(data) %>%
+    map(as.character) %>%
+    reduce(paste, sep = "~~")
+
+  group_split(data) %>%
+    set_names(names)
+}
+
+
+
+
 SetQuantile <- function(cutoff, data) {
   if (grepl(pattern = '^q[0-9]{1,2}$', x = as.character(x = cutoff), perl = TRUE)) {
     this.quantile <- as.numeric(x = sub(

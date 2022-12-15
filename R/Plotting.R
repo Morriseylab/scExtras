@@ -235,7 +235,41 @@ make3dPlot <- function(object,groupby,reduction='dm',colors=NULL){
     add_markers()
 }
 
+#'Function to plot
+#' @param object Seurat object
+#' @param feature Feature to split on, ie sample
+#' @param reduction Reduction used for the plot, umap default
+#' @param ncol How many columns to use for the plot
+#' @param cols Color palette
+#' @return patchwork object
+#' @import patchwaork
+#' @import tidyverse
+#' @export
+#' @example
+#' SplitMetaPlot(scrna,feature='sample')
 
 
+
+SplitMetaPlot <- function(object,reduction='umap',feature=NULL,ncol=4,col=NULL){
+  if(is.null(col)){
+    stop("Please provide color palette")
+  }
+
+  groups <- object@meta.data %>% pull(!!feature) %>% unique()
+  if(length(groups) > 35) {
+    stop("Too Many Groups")
+  }
+  plots <- groups %>% map(~DimPlot(object = scrna, reduction = "umap",label=F,pt.size = .1,cells.highlight = object@meta.data %>% filter(!!sym(feature)==!!.x) %>% rownames())  +
+                            coord_equal() +
+                            theme_void() +
+                            ggtitle(.x) +
+                            NoLegend()
+  )
+
+  if(!is.null(col)){
+    plots <- map2(plots,col[1:length(groups)], ~.x + scale_color_manual(values=c('grey',.y)))
+  }
+  patchwork::wrap_plots(plots,ncol=ncol)
+}
 
 

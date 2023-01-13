@@ -259,7 +259,7 @@ SplitMetaPlot <- function(object,reduction='umap',feature=NULL,ncol=4,col=NULL){
   if(length(groups) > 35) {
     stop("Too Many Groups")
   }
-  plots <- groups %>% map(~DimPlot(object = scrna, reduction = "umap",label=F,pt.size = .1,cells.highlight = object@meta.data %>% filter(!!sym(feature)==!!.x) %>% rownames())  +
+  plots <- groups %>% map(~DimPlot(object = object, reduction = "umap",label=F,pt.size = .1,cells.highlight = object@meta.data %>% filter(!!sym(feature)==!!.x) %>% rownames())  +
                             coord_equal() +
                             theme_void() +
                             ggtitle(.x) +

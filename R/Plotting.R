@@ -20,10 +20,10 @@ sampleBarGraph <- function(object,group.by=NULL,color.by=NULL,col=NULL){
     group_by(!!sym(color.by),!!sym(group.by)) %>%
     summarise(n = n()) %>%
     mutate(pct = n / sum(n))  %>%
-    ggplot(.,aes(x=!!sym(group.by),y=pct,fill=!!sym(color.by))) +
+    ggplot(.,aes(x=!!sym(group.by),y=n,fill=!!sym(color.by))) +
     geom_bar(position="fill", stat="identity")  +
     scale_y_continuous(labels = scales::percent_format()) +
-    theme_bw() + theme(legend.position = 'bottom')
+    theme_bw() + theme(legend.position = 'bottom') + ylab(paste0('% ',color.by))
 
   if(!is.null(col)){
     p <- p + scale_fill_manual(values=col)

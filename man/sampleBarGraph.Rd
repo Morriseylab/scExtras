@@ -13,7 +13,8 @@ sampleBarGraph(object, group.by = NULL, color.by = NULL, col = NULL)
 
 \item{color.by}{Variable to split each group by such as library}
 
-\item{cols}{Color palette for grouping variable}
+\item{cols}{Color palette for grouping variable
+#' @import tidyverse}
 }
 \description{
 Plot a stacked bar graph of

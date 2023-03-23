@@ -4,6 +4,7 @@
 #' @param group.by Variable for x axis typical cluster or celltype
 #' @param color.by Variable to split each group by such as library
 #' @param cols Color palette for grouping variable
+#' #' @import tidyverse
 #' @export
 
 sampleBarGraph <- function(object,group.by=NULL,color.by=NULL,col=NULL){
@@ -243,8 +244,7 @@ make3dPlot <- function(object,groupby,reduction='dm',colors=NULL){
 #' @param cols Color palette
 #' @return patchwork object
 #' @import patchwork
-#' @import purr
-#' @import dplyr
+#' @import tidyverse
 #' @export
 
 

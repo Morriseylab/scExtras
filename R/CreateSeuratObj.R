@@ -20,7 +20,7 @@ CreateSeuratObj <- function(files,name
     }
     colnames(inputdata) <- paste0(colnames(inputdata), '-',name)
     # Initialize the Seurat object with the raw (non-normalized data).
-    object <- CreateSeuratObject(counts= inputdata, min.cells = 10, min.features = 200,project = name)
+    object <- CreateSeuratObject(counts= inputdata,project = name)
   }else{
     #Initialize the first object with the raw (non-normalized data) and add rest of the data
     if(dir.exists(files[1])){
@@ -29,7 +29,7 @@ CreateSeuratObj <- function(files,name
       inputdata <- Read10X_h5(filename =files[1])
     }
     colnames(inputdata) <- paste0(colnames(inputdata), '-',name, '-rep1')
-    object <- CreateSeuratObject(counts= inputdata, min.cells = 10, min.features = 200, project = name)
+    object <- CreateSeuratObject(counts= inputdata, project = name)
     for(i in 2:length(files)){
       if(dir.exists(files[i])){
         tmp.data <- Read10X(data.dir =files[1])
@@ -39,7 +39,7 @@ CreateSeuratObj <- function(files,name
 
       colnames(tmp.data) <- paste0(colnames(tmp.data), '-',name, '-rep',i)
 
-      tmp.object <- CreateSeuratObject(counts= tmp.data, min.cells = 10, min.features = 200, project = name)
+      tmp.object <- CreateSeuratObject(counts= tmp.data, project = name)
       object <- merge(object, tmp.object, do.normalize = FALSE, min.cells = 0, min.features = 0)
     }
   }

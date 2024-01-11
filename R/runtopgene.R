@@ -5,7 +5,7 @@
 
 #g=c("FLDB","APOE","ENSG00000113196","ENSMUSG00000020287")
 
-runtopgene <- function(genelist){
+runtopgene <- function(genelist,categories=c("GeneOntologyMolecularFunction","GeneOntologyBiologicalProcess","GeneOntologyCellularComponent")){
   pc_json <- list(symbols=genelist)
   res <- POST("https://toppgene.cchmc.org/API/lookup"
               , body = pc_json
@@ -32,6 +32,7 @@ runtopgene <- function(genelist){
   df5 = df5 %>% rename('Description'='Name','pvalue'='PValue','qvalue'='QValueBonferroni','Count'='GenesInTermInQuery')
   df6=data.frame(lapply(df5, function(x) unlist(x)))
   rownames(df6)=df6$ID
+  df6 = df6[df6$Category %in% categories,]
   edo=enrichDF2enrichResult(df6,pAdjustMethod = "BH",keyColname = "ID", geneColname = "geneID", pvalueColname = "QValueFDRBH", descriptionColname = "Description", pvalueCutoff = 0.05)
   return(edo)
 }

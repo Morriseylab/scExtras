@@ -6,7 +6,7 @@
 #' @import dplyr tidyr Seurat
 #' @export
 #' @return Returns the object with object@misc[[ligrecres]] containing the matrix of lignad-receptor pair data
-RunLigRec <- function(object,group.by='ident',org,perc=30){
+RunLigRec <- function(object,group.by='ident',org,perc=30,assay="RNA"){
   #get grouping variable
   var=as.character(group.by)
   #genes=fread("data/ligrecgenes.txt",header = TRUE)
@@ -18,7 +18,7 @@ RunLigRec <- function(object,group.by='ident',org,perc=30){
     rl=hs
   }
 
-  genes <- intersect(rownames(GetAssayData(object = object, slot = "counts",assay='RNA')), unique(c(as.character(rl$ligand),as.character(rl$receptor))))
+  genes <- intersect(rownames(GetAssayData(object = object, slot = "counts",assay=assay)), unique(c(as.character(rl$ligand),as.character(rl$receptor))))
 
   #For all unique genes in the ligrec list, get their expression value for all cells and the groups the cells belong to
   da=DefaultAssay(object)

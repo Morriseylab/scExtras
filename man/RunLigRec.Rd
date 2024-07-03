@@ -4,7 +4,7 @@
 \alias{RunLigRec}
 \title{Get ligand receptor pairs between all clusters}
 \usage{
-RunLigRec(object, group.by = "ident", org, perc = 30)
+RunLigRec(object, group.by = "ident", org, perc = 30, assay = "RNA")
 }
 \arguments{
 \item{object}{Seurat object}

@@ -4,7 +4,11 @@
 \alias{runtopgene}
 \title{Run topGene API and convert it to enrichResult}
 \usage{
-runtopgene(genelist)
+runtopgene(
+  genelist,
+  categories = c("GeneOntologyMolecularFunction", "GeneOntologyBiologicalProcess",
+    "GeneOntologyCellularComponent")
+)
 }
 \arguments{
 \item{genelist}{vector of genelist}

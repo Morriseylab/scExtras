@@ -21,14 +21,14 @@ RunLigRec <- function(object,group.by='ident',org,perc=30,assay="RNA"){
   genes <- intersect(rownames(GetAssayData(object = object, slot = "counts",assay=assay)), unique(c(as.character(rl$ligand),as.character(rl$receptor))))
 
   #For all unique genes in the ligrec list, get their expression value for all cells and the groups the cells belong to
-  da=DefaultAssay(object)
-  if(da == "SCT"){
-    DefaultAssay(object) <- "RNA"
+  #da=DefaultAssay(object)
+  # if(da == "SCT"){
+  #   DefaultAssay(object) <- "RNA"
+  #   my.data <- cbind(FetchData(object,c(var)), FetchData(object = object,genes,slot="counts"))
+  #   DefaultAssay(object) <- "SCT"
+  # }else{
     my.data <- cbind(FetchData(object,c(var)), FetchData(object = object,genes,slot="counts"))
-    DefaultAssay(object) <- "SCT"
-  }else{
-    my.data <- cbind(FetchData(object,c(var)), FetchData(object = object,genes,slot="counts"))
-  }
+  #}
   colnames(my.data)[1]= "clust"
   perc=perc/100
   result=data.frame()
